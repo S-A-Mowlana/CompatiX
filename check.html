@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Check your PC hardware against game and application requirements with CompatiX.">
+    <link rel="icon" type="image/png" href="assets/images/compatix-logo-aurora.png">
+    <meta name="author" content="S A Mowlana">
+    <title>CompatiX</title>
+    <link rel="stylesheet" href="style.css"></head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><img src="assets/images/compatix-logo-aurora.png" class="navbar-logo" alt="CompatiX logo"><span>Compati<span class="brand-accent">X</span></span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+            <ul class="navbar-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="check.html">Check Compatibility</a></li>
+                <li><a href="apps-library.html">Apps</a></li>
+                <li><a href="games-library.html">Games</a></li>
+                <li><a href="build-advisor.html">Build Advisor</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a class="nav-ai-cta" href="specter.html"><img src="assets/specter-avatar-small.svg" alt="" aria-hidden="true">Specter</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="page-main checker-page">
+        <section class="checker-shell">
+            <div class="form-card-header text-center">
+                <span class="checker-kicker">COMPATIX COMPATIBILITY ENGINE</span>
+                <h1>Can Your PC Run It?</h1>
+                <p class="text-muted">Check your system against the requirements of your favourite games and apps.</p>
+            </div>
+            <nav class="checker-progress" aria-label="Compatibility check progress">
+                <span class="checker-progress-step is-active" data-checker-progress="1"><b>1</b> Your PC</span>
+                <span class="checker-progress-line" aria-hidden="true"></span>
+                <span class="checker-progress-step" data-checker-progress="2"><b>2</b> Game/App</span>
+                <span class="checker-progress-line" aria-hidden="true"></span>
+                <span class="checker-progress-step" data-checker-progress="3"><b>3</b> Result</span>
+            </nav>
+            <div id="check-error" class="check-error" hidden></div>
+
+            <form id="check-form">
+                <div class="checker-panel checker-pc-panel checker-step" id="checker-step-pc" data-checker-step="1">
+                    <div class="checker-panel-heading">
+                        <div>
+                            <span class="checker-panel-eyebrow">01 / YOUR PC SPECIFICATIONS</span>
+                            <h2 id="checker-pc-title">Your PC Specifications</h2>
+                        </div>
+                        <button type="button" class="checker-specter-link" data-specter-context="Help me find my PC specifications">Ask Specter</button>
+                    </div>
+
+                    <!-- Step 1 View 1: Choice Screen -->
+                    <div id="checker-pc-choice" class="checker-pc-choice">
+                        <div class="choice-intro text-center margin-bottom-2">
+                            <h3>How would you like to provide your PC specifications?</h3>
+                            <p class="text-muted">Choose automatic browser detection to scan your hardware, or enter your components manually.</p>
+                        </div>
+
+                        <div class="choice-cards-container">
+                            <!-- Automatically Detect Card -->
+                            <button type="button" class="choice-card choice-card-auto" id="btn-choice-auto">
+                                <div class="choice-card-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
+                                </div>
+                                <div class="choice-card-body">
+                                    <div class="choice-card-header">
+                                        <h4>Automatically Detect</h4>
+                                        <span class="choice-pill pill-recommended">Fast & Safe</span>
+                                    </div>
+                                    <p>CompatiX will scan available system information exposed safely through your browser (OS, CPU thread count, RAM estimate, and WebGL GPU renderer).</p>
+                                </div>
+                                <div class="choice-card-action">
+                                    <span class="btn-choice-cta">Auto Detect System Specs →</span>
+                                </div>
+                            </button>
+
+                            <!-- Enter Manually Card -->
+                            <button type="button" class="choice-card choice-card-manual" id="btn-choice-manual">
+                                <div class="choice-card-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </div>
+                                <div class="choice-card-body">
+                                    <div class="choice-card-header">
+                                        <h4>Enter Manually</h4>
+                                        <span class="choice-pill pill-manual">100% Exact</span>
+                                    </div>
+                                    <p>Select your exact CPU, GPU, RAM, available storage, and operating system directly from our comprehensive component database.</p>
+                                </div>
+                                <div class="choice-card-action">
+                                    <span class="btn-choice-cta btn-choice-cta-secondary">Enter Specs Manually →</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 View 2: Scanning Loading State -->
+                    <div id="checker-pc-scanning" class="checker-pc-scanning text-center" hidden>
+                        <div class="scanner-card">
+                            <div class="scanner-animation">
+                                <div class="scanner-ring"></div>
+                                <div class="scanner-icon">⚡</div>
+                            </div>
+                            <h3>Scanning available system information…</h3>
+                            <p class="text-muted text-small scanner-status-message" id="scanner-status-message">Querying browser APIs, WebGL GPU renderer, and system platform…</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 View 3: Detected Review Screen -->
+                    <div id="checker-pc-review" class="checker-pc-review" hidden>
+                        <div class="review-heading border-bottom margin-bottom-2 padding-bottom-2">
+                            <div>
+                                <h3>Detected PC Specifications</h3>
+                                <p class="text-muted text-small">Review your detected system specs. You can edit any field or fill in missing values before continuing.</p>
+                            </div>
+                            <div class="review-legend-tags">
+                                <span class="review-legend-tag tag-detected">🟢 Detected</span>
+                                <span class="review-legend-tag tag-approx">🟡 Approximate</span>
+                                <span class="review-legend-tag tag-manual">⚪ Not available</span>
+                            </div>
+                        </div>
+
+                        <!-- Browser Privacy & Detection Notice Banner -->
+                        <div class="specs-notice-banner margin-bottom-2" id="specs-notice-banner">
+                            <span class="specs-notice-icon">⚠️</span>
+                            <span class="specs-notice-text">Some hardware information cannot be accessed reliably by web browsers. Please verify the detected specifications before continuing.</span>
+                        </div>
+
+                        <div class="detected-review-grid" id="detected-review-slots">
+                            <!-- CPU Review Slot -->
+                            <div class="review-card-slot" id="slot-review-cpu">
+                                <div class="slot-header">
+                                    <span class="slot-label">CPU (Processor)</span>
+                                    <span class="status-badge-pill" id="pill-review-cpu">Approximate</span>
+                                </div>
+                                <div class="slot-detected-raw" id="raw-review-cpu">
+                                    <ul class="detection-confidence-list" id="list-review-cpu">
+                                        <li class="confidence-approx">Scanning CPU configuration...</li>
+                                    </ul>
+                                </div>
+                                <div class="slot-form-target" id="target-slot-cpu"></div>
+                            </div>
+
+                            <!-- GPU Review Slot -->
+                            <div class="review-card-slot" id="slot-review-gpu">
+                                <div class="slot-header">
+                                    <span class="slot-label">GPU (Graphics Card)</span>
+                                    <span class="status-badge-pill" id="pill-review-gpu">Not available</span>
+                                </div>
+                                <div class="slot-detected-raw" id="raw-review-gpu">
+                                    <ul class="detection-confidence-list" id="list-review-gpu">
+                                        <li class="confidence-warn">Scanning GPU renderer...</li>
+                                    </ul>
+                                </div>
+                                <div class="slot-form-target" id="target-slot-gpu"></div>
+                            </div>
+
+                            <!-- RAM Review Slot -->
+                            <div class="review-card-slot" id="slot-review-ram">
+                                <div class="slot-header">
+                                    <span class="slot-label">RAM (GB)</span>
+                                    <span class="status-badge-pill" id="pill-review-ram">Approximate</span>
+                                </div>
+                                <div class="slot-detected-raw" id="raw-review-ram">
+                                    <ul class="detection-confidence-list" id="list-review-ram">
+                                        <li class="confidence-approx">Scanning memory API...</li>
+                                    </ul>
+                                </div>
+                                <div class="slot-form-target" id="target-slot-ram"></div>
+                            </div>
+
+                            <!-- Storage Review Slot -->
+                            <div class="review-card-slot" id="slot-review-storage">
+                                <div class="slot-header">
+                                    <span class="slot-label">Storage (Available Space)</span>
+                                    <span class="status-badge-pill pill-manual" id="pill-review-storage">Not available</span>
+                                </div>
+                                <div class="slot-detected-raw" id="raw-review-storage">
+                                    <ul class="detection-confidence-list" id="list-review-storage">
+                                        <li class="confidence-warn">⚠ Storage space cannot be scanned automatically (Browser privacy sandbox)</li>
+                                        <li class="confidence-warn">⚠ Please select your available free storage space below</li>
+                                    </ul>
+                                </div>
+                                <div class="slot-form-target" id="target-slot-storage"></div>
+                            </div>
+
+                            <!-- OS Review Slot -->
+                            <div class="review-card-slot" id="slot-review-os">
+                                <div class="slot-header">
+                                    <span class="slot-label">Operating System</span>
+                                    <span class="status-badge-pill" id="pill-review-os">Detected</span>
+                                </div>
+                                <div class="slot-detected-raw" id="raw-review-os">
+                                    <ul class="detection-confidence-list" id="list-review-os">
+                                        <li class="confidence-pass">Scanning operating system platform...</li>
+                                    </ul>
+                                </div>
+                                <div class="slot-form-target" id="target-slot-os"></div>
+                            </div>
+                        </div>
+
+                        <div class="checker-step-actions review-step-actions margin-top-2">
+                            <button type="button" class="btn-secondary" id="btn-review-back">← Back to Options</button>
+                            <button type="button" class="btn-secondary" id="btn-edit-specs">Edit Specifications</button>
+                            <button type="button" class="btn" id="btn-review-continue">Confirm Specs & Continue →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 View 4: Manual Entry Screen -->
+                    <div id="checker-pc-manual" class="checker-pc-manual" hidden>
+                        <div class="manual-heading border-bottom margin-bottom-2 padding-bottom-2">
+                            <h3>Manual PC Specifications</h3>
+                            <p class="text-muted text-small">Select your exact CPU, GPU, RAM, Storage, and Operating System from the drop-down menus below.</p>
+                        </div>
+
+                        <div class="manual-form-grid" id="manual-form-slots">
+                            <div class="manual-slot" id="manual-slot-cpu"></div>
+                            <div class="manual-slot" id="manual-slot-gpu"></div>
+                            <div class="manual-slot" id="manual-slot-ram"></div>
+                            <div class="manual-slot" id="manual-slot-storage"></div>
+                            <div class="manual-slot" id="manual-slot-os"></div>
+                        </div>
+
+                        <div class="checker-step-actions manual-step-actions margin-top-2">
+                            <button type="button" class="btn-secondary" id="btn-manual-back">← Back to Options</button>
+                            <button type="button" class="btn" id="btn-manual-continue">Continue to Game/App →</button>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Master Form Fields Container -->
+                    <div id="master-form-groups" hidden>
+                        <!-- CPU -->
+                        <div class="form-group" id="group-cpu">
+                            <label for="cpu">
+                                CPU (Processor)
+                                <button type="button" class="help-icon" data-help-type="cpu" title="How do I find my CPU?">?</button>
+                            </label>
+                            <select id="cpu" name="cpu" required>
+                                <option value="">Select your CPU...</option>
+                                <optgroup label="Intel Core (Current Gen)">
+                                    <option value="Intel Core i3">Intel Core i3</option>
+                                    <option value="Intel Core i5">Intel Core i5</option>
+                                    <option value="Intel Core i7">Intel Core i7</option>
+                                    <option value="Intel Core i9">Intel Core i9</option>
+                                </optgroup>
+                                <optgroup label="Intel Core (New Naming)">
+                                    <option value="Intel Core 3">Intel Core 3</option>
+                                    <option value="Intel Core 5">Intel Core 5</option>
+                                    <option value="Intel Core 7">Intel Core 7</option>
+                                    <option value="Intel Core 9">Intel Core 9</option>
+                                    <option value="Intel Core Ultra 5">Intel Core Ultra 5</option>
+                                    <option value="Intel Core Ultra 7">Intel Core Ultra 7</option>
+                                    <option value="Intel Core Ultra 9">Intel Core Ultra 9</option>
+                                </optgroup>
+                                <optgroup label="Intel Other">
+                                    <option value="Intel Pentium">Intel Pentium</option>
+                                    <option value="Intel Celeron">Intel Celeron</option>
+                                    <option value="Intel Xeon">Intel Xeon</option>
+                                </optgroup>
+                                <optgroup label="AMD Ryzen">
+                                    <option value="AMD Ryzen 3">AMD Ryzen 3</option>
+                                    <option value="AMD Ryzen 5">AMD Ryzen 5</option>
+                                    <option value="AMD Ryzen 7">AMD Ryzen 7</option>
+                                    <option value="AMD Ryzen 9">AMD Ryzen 9</option>
+                                    <option value="AMD Ryzen Threadripper">AMD Ryzen Threadripper</option>
+                                </optgroup>
+                                <optgroup label="AMD Other">
+                                    <option value="AMD FX">AMD FX</option>
+                                    <option value="AMD Athlon">AMD Athlon</option>
+                                    <option value="AMD EPYC">AMD EPYC</option>
+                                </optgroup>
+                                <optgroup label="Apple Silicon">
+                                    <option value="Apple M1">Apple M1</option>
+                                    <option value="Apple M1 Pro">Apple M1 Pro</option>
+                                    <option value="Apple M1 Max">Apple M1 Max</option>
+                                    <option value="Apple M1 Ultra">Apple M1 Ultra</option>
+                                    <option value="Apple M2">Apple M2</option>
+                                    <option value="Apple M2 Pro">Apple M2 Pro</option>
+                                    <option value="Apple M2 Max">Apple M2 Max</option>
+                                    <option value="Apple M2 Ultra">Apple M2 Ultra</option>
+                                    <option value="Apple M3">Apple M3</option>
+                                    <option value="Apple M3 Pro">Apple M3 Pro</option>
+                                    <option value="Apple M3 Max">Apple M3 Max</option>
+                                    <option value="Apple M4">Apple M4</option>
+                                    <option value="Apple M4 Pro">Apple M4 Pro</option>
+                                    <option value="Apple M4 Max">Apple M4 Max</option>
+                                </optgroup>
+                                <option value="other">Other / Not Listed</option>
+                            </select>
+                        </div>
+
+                        <!-- GPU -->
+                        <div class="form-group" id="group-gpu">
+                            <label for="gpu">
+                                GPU (Graphics Card)
+                                <button type="button" class="help-icon" data-help-type="gpu" title="How do I find my GPU?">?</button>
+                            </label>
+                            <select id="gpu" name="gpu" required>
+                                <option value="">Select your GPU...</option>
+                                <optgroup label="Nvidia GeForce (Current/Recent)">
+                                    <option value="NVIDIA GeForce RTX 5090">NVIDIA GeForce RTX 5090</option>
+                                    <option value="NVIDIA GeForce RTX 5080">NVIDIA GeForce RTX 5080</option>
+                                    <option value="NVIDIA GeForce RTX 5070 Ti">NVIDIA GeForce RTX 5070 Ti</option>
+                                    <option value="NVIDIA GeForce RTX 5070">NVIDIA GeForce RTX 5070</option>
+                                    <option value="NVIDIA GeForce RTX 5060 Ti">NVIDIA GeForce RTX 5060 Ti</option>
+                                    <option value="NVIDIA GeForce RTX 5060">NVIDIA GeForce RTX 5060</option>
+                                    <option value="NVIDIA GeForce RTX 4090">NVIDIA GeForce RTX 4090</option>
+                                    <option value="NVIDIA GeForce RTX 4080">NVIDIA GeForce RTX 4080</option>
+                                    <option value="NVIDIA GeForce RTX 4070 Ti">NVIDIA GeForce RTX 4070 Ti</option>
+                                    <option value="NVIDIA GeForce RTX 4070">NVIDIA GeForce RTX 4070</option>
+                                    <option value="NVIDIA GeForce RTX 4060 Ti">NVIDIA GeForce RTX 4060 Ti</option>
+                                    <option value="NVIDIA GeForce RTX 4060">NVIDIA GeForce RTX 4060</option>
+                                    <option value="NVIDIA GeForce RTX 3090">NVIDIA GeForce RTX 3090</option>
+                                    <option value="NVIDIA GeForce RTX 3080">NVIDIA GeForce RTX 3080</option>
+                                    <option value="NVIDIA GeForce RTX 3070">NVIDIA GeForce RTX 3070</option>
+                                    <option value="NVIDIA GeForce RTX 3060 Ti">NVIDIA GeForce RTX 3060 Ti</option>
+                                    <option value="NVIDIA GeForce RTX 3060">NVIDIA GeForce RTX 3060</option>
+                                    <option value="NVIDIA GeForce RTX 3050">NVIDIA GeForce RTX 3050</option>
+                                </optgroup>
+                                <optgroup label="Nvidia GeForce (Older)">
+                                    <option value="NVIDIA GeForce GTX 1660 Ti">NVIDIA GeForce GTX 1660 Ti</option>
+                                    <option value="NVIDIA GeForce GTX 1660">NVIDIA GeForce GTX 1660</option>
+                                    <option value="NVIDIA GeForce GTX 1650">NVIDIA GeForce GTX 1650</option>
+                                    <option value="NVIDIA GeForce GTX 1080 Ti">NVIDIA GeForce GTX 1080 Ti</option>
+                                    <option value="NVIDIA GeForce GTX 1080">NVIDIA GeForce GTX 1080</option>
+                                    <option value="NVIDIA GeForce GTX 1070">NVIDIA GeForce GTX 1070</option>
+                                    <option value="NVIDIA GeForce GTX 1060">NVIDIA GeForce GTX 1060</option>
+                                    <option value="NVIDIA GeForce GTX 1050 Ti">NVIDIA GeForce GTX 1050 Ti</option>
+                                    <option value="NVIDIA GeForce GTX 1050">NVIDIA GeForce GTX 1050</option>
+                                </optgroup>
+                                <optgroup label="AMD Radeon (Current/Recent)">
+                                    <option value="AMD Radeon RX 9070 XT">AMD Radeon RX 9070 XT</option>
+                                    <option value="AMD Radeon RX 9070">AMD Radeon RX 9070</option>
+                                    <option value="AMD Radeon RX 7900 XTX">AMD Radeon RX 7900 XTX</option>
+                                    <option value="AMD Radeon RX 7900 XT">AMD Radeon RX 7900 XT</option>
+                                    <option value="AMD Radeon RX 7800 XT">AMD Radeon RX 7800 XT</option>
+                                    <option value="AMD Radeon RX 7700 XT">AMD Radeon RX 7700 XT</option>
+                                    <option value="AMD Radeon RX 7600">AMD Radeon RX 7600</option>
+                                    <option value="AMD Radeon RX 6900 XT">AMD Radeon RX 6900 XT</option>
+                                    <option value="AMD Radeon RX 6800 XT">AMD Radeon RX 6800 XT</option>
+                                    <option value="AMD Radeon RX 6700 XT">AMD Radeon RX 6700 XT</option>
+                                    <option value="AMD Radeon RX 6600 XT">AMD Radeon RX 6600 XT</option>
+                                    <option value="AMD Radeon RX 6600">AMD Radeon RX 6600</option>
+                                    <option value="AMD Radeon RX 6500 XT">AMD Radeon RX 6500 XT</option>
+                                </optgroup>
+                                <optgroup label="AMD Radeon (Older)">
+                                    <option value="AMD Radeon RX 590">AMD Radeon RX 590</option>
+                                    <option value="AMD Radeon RX 580">AMD Radeon RX 580</option>
+                                    <option value="AMD Radeon RX 570">AMD Radeon RX 570</option>
+                                    <option value="AMD Radeon RX 560">AMD Radeon RX 560</option>
+                                </optgroup>
+                                <optgroup label="Integrated Graphics">
+                                    <option value="Intel UHD Graphics">Intel UHD Graphics</option>
+                                    <option value="Intel Iris Xe">Intel Iris Xe</option>
+                                    <option value="AMD Radeon Graphics (APU)">AMD Radeon Graphics (APU)</option>
+                                    <option value="Apple Silicon GPU (integrated)">Apple Silicon GPU (integrated)</option>
+                                </optgroup>
+                                <option value="other">Other / Not Listed</option>
+                            </select>
+                        </div>
+
+                        <!-- RAM -->
+                        <div class="form-group" id="group-ram">
+                            <label for="ram">RAM (GB)</label>
+                            <select id="ram" name="ram" required>
+                                <option value="">Select RAM amount...</option>
+                                <option value="2">2 GB</option>
+                                <option value="4">4 GB</option>
+                                <option value="6">6 GB</option>
+                                <option value="8">8 GB</option>
+                                <option value="12">12 GB</option>
+                                <option value="16">16 GB</option>
+                                <option value="24">24 GB</option>
+                                <option value="32">32 GB</option>
+                                <option value="48">48 GB</option>
+                                <option value="64">64 GB</option>
+                                <option value="96">96 GB</option>
+                                <option value="128">128 GB+</option>
+                            </select>
+                        </div>
+
+                        <!-- Storage -->
+                        <div class="form-group" id="group-storage">
+                            <label for="storage">Storage (Available Space)</label>
+                            <select id="storage" name="storage" required>
+                                <option value="">Select storage amount...</option>
+                                <option value="5">5GB - 10GB</option>
+                                <option value="10">10GB - 20GB</option>
+                                <option value="20">20GB - 50GB</option>
+                                <option value="50">50GB - 100GB</option>
+                                <option value="100">100GB - 250GB</option>
+                                <option value="250">250GB - 500GB</option>
+                                <option value="500">500GB - 1TB</option>
+                                <option value="1000">1TB+</option>
+                            </select>
+                        </div>
+
+                        <!-- Operating System -->
+                        <div class="form-group" id="group-os">
+                            <label for="os">Operating System</label>
+                            <select id="os" name="os" required>
+                                <option value="">Select your OS...</option>
+                                <optgroup label="Windows">
+                                    <option value="Windows 7">Windows 7</option>
+                                    <option value="Windows 8 / 8.1">Windows 8 / 8.1</option>
+                                    <option value="Windows 10 (32-bit)">Windows 10 (32-bit)</option>
+                                    <option value="Windows 10 (64-bit)">Windows 10 (64-bit)</option>
+                                    <option value="Windows 11 (64-bit)">Windows 11 (64-bit)</option>
+                                    <option value="Windows 11 (ARM)">Windows 11 (ARM)</option>
+                                </optgroup>
+                                <optgroup label="macOS">
+                                    <option value="macOS Monterey">macOS Monterey</option>
+                                    <option value="macOS Ventura">macOS Ventura</option>
+                                    <option value="macOS Sonoma">macOS Sonoma</option>
+                                    <option value="macOS Sequoia">macOS Sequoia</option>
+                                    <option value="macOS (Latest)">macOS (Latest)</option>
+                                </optgroup>
+                                <optgroup label="Linux">
+                                    <option value="Ubuntu">Ubuntu</option>
+                                    <option value="Fedora">Fedora</option>
+                                    <option value="Debian">Debian</option>
+                                    <option value="Linux Mint">Linux Mint</option>
+                                    <option value="Arch Linux">Arch Linux</option>
+                                    <option value="Other Linux Distribution">Other Linux Distribution</option>
+                                </optgroup>
+                                <option value="other">Other / Not Listed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game/App Selection (Autocomplete) -->
+                <div class="checker-panel checker-target-panel checker-step" id="checker-step-target" data-checker-step="2" hidden>
+                    <div class="checker-panel-heading">
+                        <div>
+                            <span class="checker-panel-eyebrow">02 / TARGET</span>
+                            <h2>Game or App</h2>
+                        </div>
+                        <span class="checker-panel-status">Library search</span>
+                    </div>
+                <div class="form-group">
+                    <label for="game-input">What do you want to run?</label>
+                    <div class="autocomplete-container">
+                        <input 
+                            type="text" 
+                            id="game-input" 
+                            name="game" 
+                            placeholder="Search for a game or app..."
+                            autocomplete="off"
+                        >
+                        <ul id="game-suggestions" class="autocomplete-list"></ul>
+                        <div id="game-warning" class="game-warning" style="display: none;">
+                            ⚠️ Game/App not found in our database — results may be inaccurate
+                        </div>
+                    </div>
+                    <div id="game-chips" class="game-chips" aria-live="polite"></div>
+                    <div id="selected-game-preview" class="selected-game-preview" hidden></div>
+                    <input type="hidden" id="game-selected" name="selected_game" value="">
+                </div>
+                <div class="popular-choices">
+                    <span class="popular-label">Popular choices</span>
+                    <div class="popular-choice-list" aria-label="Popular choices">
+                        <button type="button" class="popular-choice" data-popular-title="Cyberpunk 2077">Cyberpunk 2077</button>
+                        <button type="button" class="popular-choice" data-popular-title="Grand Theft Auto V">GTA V</button>
+                        <button type="button" class="popular-choice" data-popular-title="Adobe Photoshop">Photoshop</button>
+                    </div>
+                </div>
+                <div class="checker-step-actions checker-target-actions">
+                    <button type="button" class="checker-back-button" id="back-to-pc">← Back</button>
+                    <button type="submit" class="btn">Check Compatibility →</button>
+                </div>
+                </div>
+            </form>
+
+            <p class="text-center text-muted text-small margin-top-2">
+                Your results compare your PC against minimum and recommended requirements from the CompatiX library.
+            </p>
+
+            <section class="checker-result checker-step" id="checker-step-result" data-checker-step="3" hidden aria-live="polite">
+                <div class="checker-result-heading">
+                    <div>
+                        <span class="checker-panel-eyebrow">03 / COMPATIBILITY RESULT</span>
+                        <h2 id="checker-result-title">Compatibility result</h2>
+                        <p id="checker-result-summary" class="text-muted"></p>
+                    </div>
+                    <span id="checker-result-status" class="checker-result-status"></span>
+                </div>
+                <div class="checker-result-target" id="checker-result-target"></div>
+                <div class="checker-comparison-wrap">
+                    <h3>Your PC vs requirements</h3>
+                    <div class="checker-comparison" id="checker-comparison"></div>
+                </div>
+                <div class="checker-upgrades" id="checker-upgrades" hidden>
+                    <h3>Suggested upgrades</h3>
+                    <ul id="checker-upgrade-list"></ul>
+                </div>
+                <div class="checker-result-actions">
+                    <button type="button" class="checker-specter-link" data-specter-context="Explain my compatibility result">Ask Specter</button>
+                    <button type="button" class="btn" id="check-another-game">Check Another Game</button>
+                </div>
+            </section>
+        </section>
+
+    <!-- Help Modals -->
+    <div id="help-modal-cpu" class="modal" hidden>
+        <div class="modal-content">
+            <span class="modal-close" data-close-help="cpu" aria-label="Close CPU help popup">&times;</span>
+            <h2 class="text-accent margin-bottom-2">How to Find Your CPU</h2>
+
+            <div class="margin-bottom-2">
+                <h3 class="text-accent margin-bottom-1">💻 On Windows:</h3>
+                <div class="help-section">
+                    <ol class="text-muted line-height-relaxed padding-left-lg">
+                        <li>Press <strong>Windows Key + R</strong> to open Run</li>
+                        <li>Type <strong>msinfo32</strong> and press Enter</li>
+                        <li>Look for "Processor" in the System Summary</li>
+                        <li>Example: Intel Core i7-9700K or AMD Ryzen 5 5600X</li>
+                    </ol>
+                    <p class="text-muted text-small italic-text margin-top-1">Alternative: Right-click "This PC" → Properties</p>
+                </div>
+            </div>
+
+            <div class="margin-bottom-2 padding-top-lg border-top-accent">
+                <h3 class="text-accent margin-bottom-1">💻 On macOS:</h3>
+                <div class="help-section">
+                    <ol class="text-muted line-height-relaxed padding-left-lg">
+                        <li>Click the <strong>Apple Menu</strong> (top-left)</li>
+                        <li>Select <strong>"About This Mac"</strong></li>
+                        <li>Look for "Chip" or "Processor"</li>
+                        <li>That value is your CPU</li>
+                    </ol>
+                    <p class="text-muted text-small italic-text margin-top-1">Example: Apple M1, Intel Core i5, or similar</p>
+                </div>
+            </div>
+
+            <div class="text-center margin-top-2">
+                <button type="button" class="btn" data-close-help="cpu">Got It!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-modal-gpu" class="modal" hidden>
+        <div class="modal-content">
+            <span class="modal-close" data-close-help="gpu" aria-label="Close GPU help popup">&times;</span>
+            <h2 class="text-accent margin-bottom-2">How to Find Your GPU</h2>
+
+            <div class="margin-bottom-2">
+                <h3 class="text-accent margin-bottom-1">💻 On Windows:</h3>
+                <div class="help-section">
+                    <ol class="text-muted line-height-relaxed padding-left-lg">
+                        <li>Press <strong>Windows Key + R</strong> to open Run</li>
+                        <li>Type <strong>dxdiag</strong> and press Enter</li>
+                        <li>Go to the "Display" tab</li>
+                        <li>Look for the "Name" field</li>
+                        <li>That is your graphics card</li>
+                    </ol>
+                    <p class="text-muted text-small italic-text margin-top-1">Example: NVIDIA GeForce RTX 3070 or AMD Radeon RX 6800</p>
+                </div>
+            </div>
+
+            <div class="margin-bottom-2 padding-top-lg border-top-accent">
+                <h3 class="text-accent margin-bottom-1">💻 On macOS:</h3>
+                <div class="help-section">
+                    <ol class="text-muted line-height-relaxed padding-left-lg">
+                        <li>Click the <strong>Apple Menu</strong> (top-left)</li>
+                        <li>Select <strong>"About This Mac"</strong></li>
+                        <li>Open <strong>"System Report..."</strong> if needed</li>
+                        <li>Look for "Graphics" or "GPU" under hardware details</li>
+                    </ol>
+                    <p class="text-muted text-small italic-text margin-top-1">Example: Apple M1 integrated GPU or external AMD/NVIDIA GPU</p>
+                </div>
+            </div>
+
+            <div class="text-center margin-top-2">
+                <button type="button" class="btn" data-close-help="gpu">Got It!</button>
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-wrap">
+            <div class="footer-columns">
+                <section class="footer-brand">
+                    <a class="footer-logo" href="index.html"><img src="assets/images/compatix-logo-aurora.png" alt="CompatiX logo"></a>
+                    <a class="footer-brand-name" href="index.html"><span>Compati<span class="brand-accent">X</span></span></a>
+                    <p class="footer-tagline">Know before you run.</p>
+                    <p class="footer-mission">Helping you check PC compatibility before you install.</p>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Explore</h3>
+                    <a class="footer-link" href="index.html">Home</a>
+                    <a class="footer-link" href="check.html">Check Compatibility</a>
+                    <a class="footer-link" href="apps-library.html">Apps</a>
+                    <a class="footer-link" href="games-library.html">Games</a>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Support</h3>
+                    <a class="footer-link" href="specter.html">Specter</a>
+                    <a class="footer-link" href="about.html">About</a>
+                    <a class="footer-link" href="contact.html">Contact</a>
+                </section>
+            </div>
+            <section class="footer-specter-callout">
+                <a class="footer-specter-link" href="specter.html">
+                    <img src="assets/specter-avatar-small.svg" alt="Specter avatar">
+                    <span class="footer-callout-text">Still have questions? Ask Specter 👻</span>
+                    <span class="footer-callout-button">Chat Now</span>
+                </a>
+            </section>
+            <section class="footer-bottom">
+                <span class="footer-copy">CompatiX — Built by <span class="text-accent">S A Mowlana</span> · 2026</span>
+                <span class="footer-status">🟢 Specter AI: Online · Game data via RAWG</span>
+            </section>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="toast-container"></div>
+<script src="search-utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
+
+

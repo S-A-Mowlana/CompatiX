@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="View detailed game information, PC requirements, and compatibility in CompatiX.">
+    <link rel="icon" type="image/png" href="assets/images/compatix-logo-aurora.png">
+    <meta name="author" content="S A Mowlana">
+    <title>CompatiX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><img src="assets/images/compatix-logo-aurora.png" class="navbar-logo" alt="CompatiX"><span>Compati<span class="brand-accent">X</span></span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+            <ul class="navbar-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="check.html">Check Compatibility</a></li>
+                <li><a href="apps-library.html">Apps</a></li>
+                <li><a href="games-library.html">Games</a></li>
+                <li><a href="build-advisor.html">Build Advisor</a></li>
+            </ul>
+            <a class="nav-ai-cta" href="specter.html"><img src="assets/specter-avatar-small.svg" alt="" aria-hidden="true">Specter</a>
+        </div>
+    </nav>
+
+    <main class="page-main game-details-redesign">
+        <!-- Loading Skeleton -->
+        <div id="detail-loading" class="detail-skeleton-state" role="status" aria-label="Loading game details">
+            <div class="detail-skeleton-sidebar">
+                <div class="detail-skeleton-cover"></div>
+                <div class="skeleton-line detail-skeleton-title"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line"></div>
+            </div>
+            <div class="detail-skeleton-main">
+                <div class="skeleton-line detail-skeleton-heading"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="detail-skeleton-gallery"></div>
+                <div class="skeleton-line detail-skeleton-heading short-heading"></div>
+                <div class="detail-skeleton-requirements">
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="detail-error" class="error-message" style="display: none;" hidden></div>
+
+        <!-- Main Content -->
+        <article id="detail-content" style="display: none;" hidden>
+            <div class="details-layout">
+                <!-- Left Sidebar Column -->
+                <aside class="details-sidebar">
+                    <div class="details-media-box">
+                        <img id="game-cover" class="details-cover-img" alt="Game cover" src="assets/placeholder-game.png" onerror="this.onerror=null;this.src='assets/placeholder-game.png'">
+                    </div>
+                    <div class="details-sidebar-header">
+                        <h1 id="game-name" class="details-title"></h1>
+                        <div class="details-badges-row">
+                            <span id="game-rating" class="rating-badge"></span>
+                            <span id="game-released" class="release-badge"></span>
+                        </div>
+                        <div id="game-platforms" class="platform-list"></div>
+                        <div id="game-pills" class="data-pills"></div>
+                    </div>
+                    <div class="details-sidebar-actions">
+                        <a id="check-game" class="btn btn-primary btn-block">Check My PC Against This</a>
+                        <button type="button" class="specter-context-button btn-specter-sidebar" data-specter-context="Can this title run on my PC?">Ask Specter about this</button>
+                    </div>
+                </aside>
+
+                <!-- Right Main Content Column -->
+                <div class="details-main-content">
+                    <!-- 1. Description Section -->
+                    <section class="detail-section">
+                        <div class="section-heading">
+                            <p class="eyebrow">CompatiX Overview</p>
+                            <h2>About this game</h2>
+                        </div>
+                        <p id="game-description" class="rich-description"></p>
+                    </section>
+
+                    <!-- 2. Screenshots Section -->
+                    <section class="detail-section">
+                        <div class="section-heading">
+                            <p class="eyebrow">Product tour</p>
+                            <h2>Screenshots</h2>
+                        </div>
+                        <div id="screenshots" class="screenshot-gallery"></div>
+                    </section>
+
+                    <!-- 3. Requirements Section -->
+                    <section class="detail-section detail-requirements-section">
+                        <div class="section-heading">
+                            <p class="eyebrow">CompatiX analysis</p>
+                            <h2>PC requirements</h2>
+                        </div>
+                        <div class="requirements-grid">
+                            <div class="requirements-card">
+                                <h2>Minimum Requirements</h2>
+                                <div class="req-item"><label>CPU</label><span id="min-cpu"></span></div>
+                                <div class="req-item"><label>GPU</label><span id="min-gpu"></span></div>
+                                <div class="req-item"><label>RAM</label><span id="min-ram"></span></div>
+                                <div class="req-item"><label>Storage</label><span id="min-storage"></span></div>
+                                <div class="req-item"><label>OS</label><span id="min-os"></span></div>
+                            </div>
+                            <div class="requirements-card">
+                                <h2>Recommended Requirements</h2>
+                                <div class="req-item"><label>CPU</label><span id="rec-cpu"></span></div>
+                                <div class="req-item"><label>GPU</label><span id="rec-gpu"></span></div>
+                                <div class="req-item"><label>RAM</label><span id="rec-ram"></span></div>
+                                <div class="req-item"><label>Storage</label><span id="rec-storage"></span></div>
+                                <div class="req-item"><label>OS</label><span id="rec-os"></span></div>
+                            </div>
+                        </div>
+                        <p class="requirements-source" id="requirements-source" aria-live="polite"></p>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Back Action -->
+            <div class="details-back-container">
+                <a class="btn btn-secondary" href="games-library.html">← Back to Games</a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-wrap">
+            <div class="footer-columns">
+                <section class="footer-brand">
+                    <a class="footer-logo" href="index.html"><img src="assets/images/compatix-logo-aurora.png" alt="CompatiX logo"></a>
+                    <a class="footer-brand-name" href="index.html"><span>Compati<span class="brand-accent">X</span></span></a>
+                    <p class="footer-tagline">Know before you run.</p>
+                    <p class="footer-mission">Helping you check PC compatibility before you install.</p>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Explore</h3>
+                    <a class="footer-link" href="index.html">Home</a>
+                    <a class="footer-link" href="check.html">Check Compatibility</a>
+                    <a class="footer-link" href="games-library.html">Games</a>
+                    <a class="footer-link" href="apps-library.html">Apps</a>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Support</h3>
+                    <a class="footer-link" href="specter.html">Specter AI</a>
+                    <a class="footer-link" href="about.html">About</a>
+                    <a class="footer-link" href="contact.html">Contact</a>
+                </section>
+            </div>
+            <section class="footer-bottom">
+                <span class="footer-copy">© 2026 CompatiX — Built by <span class="text-accent">S A Mowlana</span></span>
+                <span class="footer-status">🟢 Specter AI Online · <a href="https://rawg.io/apidocs" target="_blank" rel="noopener">Game data via RAWG</a></span>
+            </section>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const $ = id => document.getElementById(id);
+        const icon = n => /playstation/i.test(n) ? 'PS' : /xbox/i.test(n) ? 'XB' : /nintendo/i.test(n) ? 'NT' : /linux/i.test(n) ? 'LN' : /mac/i.test(n) ? 'MC' : 'PC';
+
+        function text(id, val) {
+            const el = $(id);
+            if (el) el.textContent = val || 'Not specified';
+        }
+
+        function show(g) {
+            const loading = $('detail-loading');
+            const error = $('detail-error');
+            const content = $('detail-content');
+
+            if (loading) {
+                loading.style.display = 'none';
+                loading.hidden = true;
+            }
+            if (error) {
+                error.style.display = 'none';
+                error.hidden = true;
+            }
+            if (content) {
+                content.style.display = 'block';
+                content.hidden = false;
+                content.classList.remove('is-ready');
+                requestAnimationFrame(() => content.classList.add('is-ready'));
+            }
+
+            const coverImg = $('game-cover');
+            if (coverImg) {
+                const imgUrl = String(g.image_url || '').includes('placeholder') ? '' : String(g.image_url || '').replace(/"/g, '');
+                if (imgUrl) {
+                    coverImg.src = imgUrl;
+                    coverImg.parentElement.style.display = 'flex';
+                } else {
+                    coverImg.parentElement.style.display = 'none';
+                }
+            }
+
+            text('game-name', g.name);
+            if ($('game-rating')) $('game-rating').textContent = g.rating ? `${Number(g.rating).toFixed(1)} ★` : 'Unrated';
+            text('game-released', g.released ? new Date(g.released + 'T00:00:00').toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'Release date unavailable');
+
+            if ($('game-platforms')) $('game-platforms').innerHTML = (g.platforms || []).slice(0, 8).map(p => `<span title="${escapeHtml(p)}">${icon(p)}</span>`).join('');
+            
+            const rawPills = [...(Array.isArray(g.genres) ? g.genres : (g.genre ? String(g.genre).split(',') : [])), ...(Array.isArray(g.tags) ? g.tags : [])];
+            const seenPills = new Set();
+            const uniquePills = [];
+            for (const p of rawPills) {
+                if (!p) continue;
+                const clean = String(p).trim();
+                const key = clean.toLowerCase();
+                if (clean && !seenPills.has(key)) {
+                    seenPills.add(key);
+                    uniquePills.push(clean);
+                }
+            }
+            if ($('game-pills')) $('game-pills').innerHTML = uniquePills.slice(0, 10).map(t => `<span>${escapeHtml(t)}</span>`).join('');
+            text('game-description', g.full_description || 'No description available.');
+            if ($('check-game')) $('check-game').href = 'check.html?item=' + encodeURIComponent(g.name) + '&type=game';
+
+            const isPlaceholder = (val) => !val || /not specified|not published|contact support|^0(\s*gb)?$/i.test(String(val).trim());
+            const reqConfig = [
+                ['min-cpu', 'min_cpu'],
+                ['min-gpu', 'min_gpu'],
+                ['min-ram', 'min_ram', 'GB'],
+                ['min-storage', 'min_storage', 'GB'],
+                ['min-os', 'supported_os'],
+                ['rec-cpu', 'rec_cpu'],
+                ['rec-gpu', 'rec_gpu'],
+                ['rec-ram', 'rec_ram', 'GB'],
+                ['rec-storage', 'rec_storage', 'GB'],
+                ['rec-os', 'supported_os']
+            ];
+
+            reqConfig.forEach(([id, key, unit]) => {
+                const el = $(id);
+                const row = el ? el.closest('.req-item') : null;
+                let val = g[key];
+                if (key === 'rec_os' && !val) val = g.supported_os;
+
+                if (isPlaceholder(val)) {
+                    if (row) row.style.display = 'none';
+                } else {
+                    if (row) row.style.display = '';
+                    if (el) {
+                        if (unit && typeof val === 'number') {
+                            el.textContent = `${val} ${unit}`;
+                        } else if (unit && typeof val === 'string' && !val.toLowerCase().includes(unit.toLowerCase())) {
+                            el.textContent = `${val} ${unit}`;
+                        } else {
+                            el.textContent = val;
+                        }
+                    }
+                }
+            });
+
+            const source = $('requirements-source');
+            if (source) {
+                if (g.ai_estimated) {
+                    source.innerHTML = 'Estimated requirements based on similar titles — official specs unavailable. <span class="ai-source-tag">AI</span>';
+                } else {
+                    source.innerHTML = `Requirements sourced from ${escapeHtml(g.source || 'RAWG')}`;
+                }
+            }
+
+            const shots = (Array.isArray(g.short_screenshots) ? g.short_screenshots : []).filter(s => typeof s === 'string' && s.trim() !== '');
+            if ($('screenshots')) {
+                renderGallery($('screenshots'), shots, g.name);
+            }
+        }
+
+        function showError(msg) {
+            const loading = $('detail-loading');
+            const error = $('detail-error');
+            const content = $('detail-content');
+
+            if (loading) {
+                loading.style.display = 'none';
+                loading.hidden = true;
+            }
+            if (content) {
+                content.style.display = 'none';
+                content.hidden = true;
+            }
+            if (error) {
+                error.textContent = msg;
+                error.style.display = 'block';
+                error.hidden = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const id = new URLSearchParams(location.search).get('id');
+            if (!id) {
+                showError('No game was selected.');
+                return;
+            }
+
+            fetch('get_games_library.php?id=' + encodeURIComponent(id))
+                .then(r => {
+                    if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`);
+                    return r.json();
+                })
+                .then(g => {
+                    if (g.error) throw new Error(g.error);
+                    show(g);
+                })
+                .catch(e => {
+                    showError(e.message || 'Failed to load game details.');
+                });
+        });
+    </script>
+</body>
+</html>

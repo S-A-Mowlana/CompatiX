@@ -1,0 +1,27 @@
+# CompatiX .gitignore
+# Never commit sensitive configuration files
+
+# Configuration with API keys
+config.php
+
+# Contact form logs
+contact_log.json
+logs/
+debug.log
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# System files
+Thumbs.db
+.env
+
+# Backups
+*.bak
+*.backup
+*~

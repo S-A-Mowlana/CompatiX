@@ -1,0 +1,25 @@
+{
+  "$schema": {
+    "name": "string",
+    "source": "string",
+    "ai_estimated": "boolean",
+    "minimum": { "cpu": "string", "gpu": "string", "ram": "number", "storage": "number", "os": "string" },
+    "recommended": { "cpu": "string", "gpu": "string", "ram": "number", "storage": "number", "os": "string" }
+  },
+  "entries": [
+    {
+      "name": "Cyberpunk 2077",
+      "source": "CD PROJEKT RED",
+      "ai_estimated": false,
+      "minimum": { "cpu": "Intel Core i7-9700 / AMD Ryzen 5 3600", "gpu": "NVIDIA GeForce RTX 2060 / AMD Radeon RX 5700", "ram": 8, "storage": 160, "os": "Windows 10/11 64-bit" },
+      "recommended": { "cpu": "Intel Core i7-9700 / AMD Ryzen 5 3600", "gpu": "NVIDIA GeForce RTX 2060 / AMD Radeon RX 5700", "ram": 16, "storage": 160, "os": "Windows 10/11 64-bit" }
+    },
+    {
+      "name": "Grand Theft Auto V",
+      "source": "Rockstar Games",
+      "ai_estimated": false,
+      "minimum": { "cpu": "Intel Core i5-3470 / AMD FX-8350", "gpu": "NVIDIA GTX 660 / AMD HD 7870", "ram": 8, "storage": 110, "os": "Windows 10/11 64-bit" },
+      "recommended": { "cpu": "Intel Core i5-3470 / AMD FX-8350", "gpu": "NVIDIA GTX 660 / AMD HD 7870", "ram": 16, "storage": 110, "os": "Windows 10/11 64-bit" }
+    }
+  ]
+}

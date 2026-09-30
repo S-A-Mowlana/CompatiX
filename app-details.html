@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View detailed application information and PC compatibility requirements in CompatiX.">
+    <link rel="icon" type="image/png" href="assets/images/compatix-logo-aurora.png">
+    <meta name="author" content="S A Mowlana">
+    <title>CompatiX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><img src="assets/images/compatix-logo-aurora.png" class="navbar-logo" alt="CompatiX logo"><span>Compati<span class="brand-accent">X</span></span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+            <ul class="navbar-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="check.html">Check Compatibility</a></li>
+                <li><a href="apps-library.html">Apps</a></li>
+                <li><a href="games-library.html">Games</a></li>
+                <li><a href="build-advisor.html">Build Advisor</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a class="nav-ai-cta" href="specter.html"><img src="assets/specter-avatar-small.svg" alt="" aria-hidden="true">Specter</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="page-main">
+        <div id="loading-message" class="detail-skeleton-state" role="status" aria-label="Loading app details">
+            <div class="detail-skeleton-sidebar">
+                <div class="detail-skeleton-cover app-detail-skeleton-cover"></div>
+                <div class="skeleton-line detail-skeleton-title"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line"></div>
+            </div>
+            <div class="detail-skeleton-main">
+                <div class="skeleton-line detail-skeleton-heading"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="detail-skeleton-gallery"></div>
+                <div class="skeleton-line detail-skeleton-heading short-heading"></div>
+                <div class="detail-skeleton-requirements">
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                    <div class="skeleton-line"></div><div class="skeleton-line medium"></div>
+                </div>
+            </div>
+        </div>
+        <div id="error-message" class="error-message" style="display: none;">Failed to load app details. Please try again.</div>
+        
+        <article id="app-details-content" style="display: none;">
+            <div class="details-layout">
+                <!-- Left Sidebar Column -->
+                <aside class="details-sidebar">
+                    <div class="details-media-box">
+                        <img id="app-image" class="details-app-icon" src="assets/icons/apps/app.svg" alt="Application icon" onerror="this.onerror=null;this.src='assets/icons/apps/app.svg'">
+                    </div>
+                    <div class="details-sidebar-header">
+                        <h1 id="app-name" class="details-title"></h1>
+                        <p class="details-category-tag category-tag" id="app-category"></p>
+                        <div id="app-platforms" class="detail-platforms"></div>
+                        <div id="app-performance-tier" class="details-tier"></div>
+                    </div>
+                    <div class="details-sidebar-actions">
+                        <button class="btn btn-primary btn-block" id="check-pc-btn" onclick="checkPCAgainstApp()">Check My PC Against This App</button>
+                        <button type="button" class="specter-context-button btn-specter-sidebar" data-specter-context="Can this app run on my PC?">Ask Specter about this</button>
+                    </div>
+                </aside>
+
+                <!-- Right Main Content Column -->
+                <div class="details-main-content">
+                    <!-- 1. Description Section -->
+                    <section class="detail-section">
+                        <div class="section-heading">
+                            <p class="eyebrow">CompatiX Overview</p>
+                            <h2>About this app</h2>
+                        </div>
+                        <p id="app-description" class="rich-description"></p>
+                    </section>
+
+                    <!-- 2. Screenshots Section -->
+                    <section class="detail-section details-screenshots" hidden>
+                        <div class="section-heading">
+                            <p class="eyebrow">Product tour</p>
+                            <h2>Screenshots</h2>
+                        </div>
+                        <div id="app-screenshots" class="screenshot-gallery"></div>
+                    </section>
+
+                    <!-- 3. Requirements Section -->
+                    <section class="detail-section detail-requirements-section">
+                        <div class="section-heading">
+                            <p class="eyebrow">CompatiX analysis</p>
+                            <h2>PC requirements</h2>
+                        </div>
+                        <div class="requirements-grid">
+                            <!-- Minimum Requirements Card -->
+                            <div class="requirements-card">
+                                <h2>Minimum Requirements</h2>
+                                <div class="req-item">
+                                    <label>CPU:</label>
+                                    <span id="min-cpu"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>GPU:</label>
+                                    <span id="min-gpu"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>RAM:</label>
+                                    <span id="min-ram"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>Storage:</label>
+                                    <span id="min-storage"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>OS:</label>
+                                    <span id="min-os"></span>
+                                </div>
+                            </div>
+
+                            <!-- Recommended Requirements Card -->
+                            <div class="requirements-card">
+                                <h2>Recommended Requirements</h2>
+                                <div class="req-item">
+                                    <label>CPU:</label>
+                                    <span id="rec-cpu"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>GPU:</label>
+                                    <span id="rec-gpu"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>RAM:</label>
+                                    <span id="rec-ram"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>Storage:</label>
+                                    <span id="rec-storage"></span>
+                                </div>
+                                <div class="req-item">
+                                    <label>OS:</label>
+                                    <span id="rec-os"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="requirements-source" id="requirements-source" aria-live="polite"></p>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Back Link -->
+            <div class="details-back-container">
+                <a href="apps-library.html" class="btn btn-secondary">← Back to Apps</a>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-wrap">
+            <div class="footer-columns">
+                <section class="footer-brand">
+                    <a class="footer-logo" href="index.html"><img src="assets/images/compatix-logo-aurora.png" alt="CompatiX logo"></a>
+                    <a class="footer-brand-name" href="index.html"><span>Compati<span class="brand-accent">X</span></span></a>
+                    <p class="footer-tagline">Know before you run.</p>
+                    <p class="footer-mission">Helping you check PC compatibility before you install.</p>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Explore</h3>
+                    <a class="footer-link" href="index.html">Home</a>
+                    <a class="footer-link" href="check.html">Check Compatibility</a>
+                    <a class="footer-link" href="apps-library.html">Apps</a>
+                    <a class="footer-link" href="games-library.html">Games</a>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Support</h3>
+                    <a class="footer-link" href="specter.html">Specter</a>
+                    <a class="footer-link" href="about.html">About</a>
+                    <a class="footer-link" href="contact.html">Contact</a>
+                </section>
+            </div>
+            <section class="footer-specter-callout">
+                <a class="footer-specter-link" href="specter.html">
+                    <img src="assets/specter-avatar-small.svg" alt="Specter avatar">
+                    <span class="footer-callout-text">Still have questions? Ask Specter 👻</span>
+                    <span class="footer-callout-button">Chat Now</span>
+                </a>
+            </section>
+            <section class="footer-bottom">
+                <span class="footer-copy">CompatiX — Built by <span class="text-accent">S A Mowlana</span> · 2026</span>
+                <span class="footer-status">🟢 Specter AI: Online · Game data via RAWG</span>
+            </section>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAppDetails();
+        });
+
+        function getAppIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        function loadAppDetails() {
+            const appId = getAppIdFromURL();
+            
+            if (!appId) {
+                showError('No app ID provided');
+                return;
+            }
+
+            const url = 'get_apps_library.php?id=' + encodeURIComponent(appId);
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        showError(data.error);
+                    } else {
+                        displayAppDetails(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading app:', error);
+                    showError('Failed to load app details');
+                });
+        }
+
+        function displayAppDetails(app) {
+            const image = document.getElementById('app-image');
+            image.src = app.icon_url || app.image_url || 'assets/icons/apps/app.svg';
+            image.onerror = () => { image.onerror = null; image.src = app.icon_fallback || 'assets/icons/apps/app.svg'; };
+            image.alt = `${app.name} logo`;
+            document.getElementById('app-name').textContent = escapeHtml(app.name);
+            document.getElementById('app-category').textContent = escapeHtml(app.category || 'App');
+            const rawPlatforms = String(app.supported_os || '').split(',');
+            const seenPlats = new Set();
+            const uniquePlats = [];
+            for (const p of rawPlatforms) {
+                const clean = p.trim();
+                const key = clean.toLowerCase();
+                if (clean && !seenPlats.has(key)) {
+                    seenPlats.add(key);
+                    uniquePlats.push(clean);
+                }
+            }
+            document.getElementById('app-platforms').innerHTML = uniquePlats.map(platform => `<span class="platform-badge">${escapeHtml(platform)}</span>`).join('');
+            document.getElementById('app-performance-tier').innerHTML = renderPerformanceTier(app.performance_tier);
+            document.getElementById('app-description').textContent = escapeHtml(app.full_description || 'No description available');
+            const screenshotSection = document.querySelector('.details-screenshots');
+            if (screenshotSection) screenshotSection.hidden = true;
+            loadAppMedia(app.id, app.name);
+
+            // Minimum Requirements
+            document.getElementById('min-cpu').textContent = escapeHtml(app.min_cpu);
+            document.getElementById('min-gpu').textContent = escapeHtml(app.min_gpu);
+            document.getElementById('min-ram').textContent = app.min_ram + ' GB';
+            document.getElementById('min-storage').textContent = app.min_storage + ' GB';
+            document.getElementById('min-os').textContent = escapeHtml(app.supported_os);
+
+            // Recommended Requirements
+            document.getElementById('rec-cpu').textContent = app.rec_cpu || '—';
+            document.getElementById('rec-gpu').textContent = app.rec_gpu || '—';
+            document.getElementById('rec-ram').textContent = (app.rec_ram ? app.rec_ram + ' GB' : '—');
+            document.getElementById('rec-storage').textContent = (app.rec_storage ? app.rec_storage + ' GB' : '—');
+            document.getElementById('rec-os').textContent = app.supported_os || '—';
+            const isPlaceholder = (val) => !val || /not specified|not published|contact support|—|^0(\s*gb)?$/i.test(String(val).trim());
+            ['min-cpu', 'min-gpu', 'min-ram', 'min-storage', 'min-os', 'rec-cpu', 'rec-gpu', 'rec-ram', 'rec-storage', 'rec-os'].forEach(id => {
+                const el = document.getElementById(id);
+                const row = el ? el.closest('.req-item') : null;
+                if (row && isPlaceholder(el.textContent)) row.style.display = 'none';
+            });
+            const source = document.getElementById('requirements-source');
+            if (source) source.innerHTML = app.ai_estimated ? 'Estimated requirements based on similar titles — official specs unavailable. <span class="ai-source-tag">AI</span>' : `Requirements sourced from ${escapeHtml(app.source || 'official application documentation')}`;
+
+            // Store app ID for check button
+            document.getElementById('check-pc-btn').dataset.appId = escapeHtml(app.id);
+            document.getElementById('check-pc-btn').dataset.appName = escapeHtml(app.name);
+
+            // Hide loading, show content
+            document.getElementById('loading-message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+            const content = document.getElementById('app-details-content');
+            content.style.display = 'block';
+            content.classList.remove('is-ready');
+            requestAnimationFrame(() => content.classList.add('is-ready'));
+        }
+
+        function loadAppMedia(appId, appName) {
+            fetch('api/appdata.php?id=' + encodeURIComponent(appId))
+                .then(response => response.json())
+                .then(media => {
+                    if (!media || !media.found) return;
+                    const description = document.getElementById('app-description');
+                    if (media.description) description.textContent = media.description;
+                    const screenshots = Array.isArray(media.screenshots) ? media.screenshots : [];
+                    const section = document.querySelector('.details-screenshots');
+                    if (screenshots.length) {
+                        if (section) section.hidden = false;
+                        renderGallery(document.getElementById('app-screenshots'), screenshots, appName || 'App');
+                    }
+                })
+                .catch(() => {});
+        }
+
+        function showError(message) {
+            document.getElementById('loading-message').style.display = 'none';
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('app-details-content').style.display = 'none';
+        }
+
+        function checkPCAgainstApp() {
+            const appId = document.getElementById('check-pc-btn').dataset.appId;
+            const appName = document.getElementById('check-pc-btn').dataset.appName;
+            
+            if (appId && appName) {
+                window.location.href = 'check.html?item=' + encodeURIComponent(appName) + '&type=app';
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>

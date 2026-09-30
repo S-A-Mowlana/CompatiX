@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get a PC suggestion based on your budget or the app or game you want to use.">
+            <link rel="icon" type="image/png" href="assets/images/compatix-logo-aurora.png">
+    <meta name="author" content="S A Mowlana">
+    <title>CompatiX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><img src="assets/images/compatix-logo-aurora.png" class="navbar-logo" alt="CompatiX logo"><span>Compati<span class="brand-accent">X</span></span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+            <ul class="navbar-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li><li><a href="check.html">Check Compatibility</a></li><li><a href="apps-library.html">Apps</a></li><li><a href="games-library.html">Games</a></li><li><a href="build-advisor.html">Build Advisor</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a class="nav-ai-cta" href="specter.html"><img src="assets/specter-avatar-small.svg" alt="" aria-hidden="true">Specter</a>
+        </div>
+    </nav>
+    <main class="page-main">
+        <section class="card card-centered-900 build-advisor-page-card">
+            <header class="build-advisor-intro"><h2>Build Advisor</h2><p class="text-muted">Get a practical PC suggestion based on your budget or the app or game you want to use.</p></header>
+            <section id="build-advisor-suggestion-panel" class="build-advisor-suggestion-panel">
+                <div class="build-advisor-suggestion-tabs" aria-label="Suggestion modes" role="tablist">
+                    <button type="button" class="build-advisor-subtab is-active" data-suggestion-mode="budget" role="tab" aria-selected="true" aria-controls="suggestion-budget-panel">By Budget</button>
+                    <button type="button" class="build-advisor-subtab" data-suggestion-mode="game" role="tab" aria-selected="false" aria-controls="suggestion-game-panel">By App/Game</button>
+                </div>
+                <div id="suggestion-budget-panel" class="suggestion-mode-panel" data-suggestion-panel="budget" role="tabpanel">
+                    <form id="build-advisor-form"><div id="build-advisor-error" class="build-advisor-error" role="alert" hidden></div>
+                        <div class="form-group"><label for="budget">Budget range</label><select id="budget" name="budget" required><option value="">Select your budget...</option><option>Under Rs. 150,000</option><option>Rs. 150,000 - Rs. 300,000</option><option>Rs. 300,000 - Rs. 450,000</option><option>Rs. 450,000 - Rs. 750,000</option><option>Rs. 750,000+</option></select></div>
+                        <div class="form-group"><label for="usecase">Use-case</label><select id="usecase" name="usecase" required><option value="">Select your use case...</option><option>General Use / Browsing</option><option>Gaming</option><option>Video/Photo Editing</option><option>3D Rendering / CAD</option><option>Programming / Development</option></select></div>
+                        <div class="form-actions text-center"><button type="submit" id="get-build-suggestion" class="btn">Get Suggestion</button></div>
+                    </form>
+                </div>
+                <div id="suggestion-game-panel" class="suggestion-mode-panel is-hidden" data-suggestion-panel="game" role="tabpanel">
+                    <form id="build-advisor-game-form"><div class="form-group"><label for="game-suggestion-input">Game or app</label><input id="game-suggestion-input" name="game" type="text" placeholder="Type a game or app name..." autocomplete="off" required></div>
+                        <div class="game-tier-grid" role="radiogroup" aria-label="Performance tier selection"><button type="button" class="game-tier-card is-selected" data-tier-option="minimum" aria-pressed="true"><span class="game-tier-icon">⚡</span><span class="game-tier-name">Minimum</span><span class="game-tier-copy">Bare minimum to start</span></button><button type="button" class="game-tier-card" data-tier-option="balanced" aria-pressed="false"><span class="game-tier-icon">🎯</span><span class="game-tier-name">Balanced</span><span class="game-tier-copy">Smooth everyday play</span></button><button type="button" class="game-tier-card" data-tier-option="best" aria-pressed="false"><span class="game-tier-icon">🏆</span><span class="game-tier-name">Best</span><span class="game-tier-copy">High-end performance</span></button></div>
+                        <div class="form-actions text-center"><button type="submit" id="get-game-suggestion" class="btn">Get Suggestion</button></div>
+                    </form>
+                </div>
+                <div id="build-advisor-result" class="build-advisor-result is-hidden"><div class="build-result-card">
+                    <div id="suggested-context" class="suggested-context is-hidden"><img id="suggested-context-image" class="suggested-context-image" alt="" aria-hidden="true"><div class="suggested-context-body"><span class="suggested-context-label">Suggested for</span><strong id="suggested-context-name" class="suggested-context-name"></strong></div></div>
+                    <div class="build-result-head"><h3>Suggested PC</h3></div>
+                    <div class="build-result-spec-grid">
+                        <div class="build-spec-card"><div class="build-spec-icon" aria-hidden="true"><svg viewBox="0 0 88 70" class="build-spec-svg"><rect x="18" y="12" width="52" height="46" rx="7" class="spec-shape"/><rect x="30" y="24" width="28" height="22" rx="4" class="spec-core"/><path d="M22 8v8M32 8v8M42 8v8M52 8v8M62 8v8M22 54v8M32 54v8M42 54v8M52 54v8M62 54v8M12 20h8M12 30h8M12 40h8M12 50h8M68 20h8M68 30h8M68 40h8M68 50h8" class="spec-pins"/></svg></div><span class="build-label">CPU Tier</span><span id="suggested-cpu" class="build-value"></span></div>
+                        <div class="build-spec-card"><div class="build-spec-icon" aria-hidden="true"><svg viewBox="0 0 150 70" class="build-spec-svg gpu-svg"><path d="M16 18h94a10 10 0 0 1 10 10v15a10 10 0 0 1-10 10H16z" class="spec-shape"/><circle cx="48" cy="35" r="10" class="spec-fan"/><circle cx="86" cy="35" r="10" class="spec-fan"/></svg></div><span class="build-label">GPU Tier</span><span id="suggested-gpu" class="build-value"></span></div>
+                        <div class="build-spec-card"><div class="build-spec-icon" aria-hidden="true"><svg viewBox="0 0 88 70" class="build-spec-svg"><rect x="14" y="12" width="16" height="46" rx="4" class="spec-shape"/><rect x="58" y="12" width="16" height="46" rx="4" class="spec-shape"/><path d="M16 18h12M16 28h12M16 38h12M16 48h12M60 18h12M60 28h12M60 38h12M60 48h12" class="spec-pins"/></svg></div><span class="build-label">RAM</span><span id="suggested-ram" class="build-value"></span></div>
+                        <div class="build-spec-card"><div class="build-spec-icon" aria-hidden="true"><svg viewBox="0 0 88 70" class="build-spec-svg"><rect x="16" y="18" width="52" height="34" rx="6" class="spec-shape"/><rect x="25" y="23" width="34" height="24" rx="4" class="spec-core"/><circle cx="58" cy="35" r="6" class="spec-fan"/></svg></div><span class="build-label">Storage</span><span id="suggested-storage" class="build-value"></span></div>
+                    </div>
+                    <div class="build-rationale-wrap"><p id="suggested-rationale" class="build-rationale"></p></div><button type="button" class="specter-context-button" data-specter-context="Ask Specter to refine this build">Ask Specter to refine</button><div class="form-actions text-center build-result-actions"><a href="check.html" class="btn btn-secondary">Check This Against Your Current PC</a></div>
+                </div></div>
+            </section>
+        </section>
+    </main>
+    <footer class="site-footer"><div class="footer-wrap"><div class="footer-columns"><section class="footer-brand"><a class="footer-logo" href="index.html"><img src="assets/images/compatix-logo-aurora.png" alt="CompatiX logo"></a><a class="footer-brand-name" href="index.html"><span>Compati<span class="brand-accent">X</span></span></a><p class="footer-tagline">Know before you run.</p><p class="footer-mission">Helping you check PC compatibility before you install.</p></section><section class="footer-links"><h3 class="footer-column-title">Quick Links</h3><a class="footer-link" href="index.html">Home</a><a class="footer-link" href="check.html">Check Compatibility</a><a class="footer-link" href="apps-library.html">Apps</a><a class="footer-link" href="games-library.html">Games</a></section><section class="footer-links"><h3 class="footer-column-title">More</h3><a class="footer-link" href="specter.html">Specter</a><a class="footer-link" href="about.html">About</a><a class="footer-link" href="contact.html">Contact</a></section></div><section class="footer-specter-callout"><a class="footer-specter-link" href="specter.html"><img src="assets/specter-avatar-small.svg" alt="Specter avatar"><span class="footer-callout-text">Still have questions? Ask Specter 👻</span><span class="footer-callout-button">Chat Now</span></a></section><section class="footer-bottom"><span class="footer-copy">CompatiX — Built by <span class="text-accent">S A Mowlana</span> · 2026</span><span class="footer-status">🟢 Specter AI: Online · Game data via RAWG</span></section></div></footer>
+    <script src="search-utils.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

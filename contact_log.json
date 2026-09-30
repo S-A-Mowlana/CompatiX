@@ -1,0 +1,10 @@
+[
+    {
+        "timestamp": "2026-09-13 13:02:58",
+        "name": "Test User",
+        "email": "test@example.com",
+        "subject": "Test Inquiry",
+        "message": "Hello CompatiX!",
+        "ip_address": "::1"
+    }
+]

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Review your CompatiX compatibility and detailed hardware comparison.">
+    <link rel="icon" type="image/png" href="assets/images/compatix-logo-aurora.png">
+    <meta name="author" content="S A Mowlana">
+    <title>CompatiX</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Results view: centered single-column report. */
+        #results-state { width: min(100%, 980px); margin: 0 auto; }
+        #report-status { margin-bottom: 12px; padding: 20px; }
+        #report-status .status-card-title { margin-bottom: 8px; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.05; }
+        #report-status p { margin-bottom: 12px; font-size: .95rem; }
+        #report-status .specter-context-button { margin-top: 8px; padding: 10px 16px; }
+        .results-actions { display: flex !important; flex-wrap: wrap; align-items: stretch; gap: 10px; width: 100%; margin: 0 0 28px; }
+        .results-actions .btn { flex: 1 1 190px; width: auto; min-height: 42px; justify-content: center; }
+        .results-header { display: none !important; }
+        .results-two-column { display: block !important; }
+        .results-left-column, .results-right-column { display: contents !important; }
+        .specs-comparison-section { display: none !important; }
+        .requirements-comparison-table { overflow-x: auto; }
+        .report-status-card { position: relative; padding: 20px 190px 20px 20px; }
+        .results-combined-header { display: flex; align-items: center; gap: 18px; min-width: 0; }
+        .results-title-image { flex: 0 0 92px; width: 92px; height: 92px; object-fit: cover; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); }
+        .results-title-fallback { display: grid; flex: 0 0 92px; width: 92px; height: 92px; place-items: center; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); color: var(--accent-solid); font-family: var(--font-mono); font-size: 1.5rem; font-weight: 800; }
+        .results-combined-copy { min-width: 0; }
+        .results-combined-title { margin: 0 0 8px; color: var(--text); font-size: clamp(1.35rem, 3vw, 2rem); line-height: 1.15; }
+        .results-combined-status { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 1.15rem; font-weight: 800; }
+        .results-combined-status.is-pass { color: var(--success); }
+        .results-combined-status.is-fail { color: var(--danger); }
+        .results-combined-status .report-status-icon { flex-basis: 28px; width: 28px; height: 28px; font-size: 1rem; }
+        .results-combined-reason { margin: 0 !important; color: var(--text-muted) !important; font-size: .88rem !important; }
+        .results-combined-meta { display: block; margin-top: 8px; color: var(--muted); font-size: .75rem; }
+        .report-status-main { display: flex; align-items: flex-start; gap: 14px; }
+        .report-status-icon { display: inline-grid; flex: 0 0 38px; width: 38px; height: 38px; place-items: center; border-radius: 50%; color: var(--bg); font-size: 1.45rem; font-weight: 900; line-height: 1; }
+        .report-status-icon.is-pass { background: var(--success); }
+        .report-status-icon.is-fail { background: var(--danger); }
+        .report-status-summary { display: inline-block; margin-bottom: 8px; padding: 4px 9px; border-radius: 999px; font-size: .75rem; font-weight: 800; }
+        .report-status-summary.is-pass { color: var(--success); background: color-mix(in srgb, var(--success) 14%, transparent); }
+        .report-status-summary.is-fail { color: var(--danger); background: color-mix(in srgb, var(--danger) 14%, transparent); }
+        #report-status .status-card-label { display: block; margin-top: 8px; }
+        #report-status .specter-context-button { position: absolute; top: 16px; right: 16px; margin: 0; padding: 10px 16px; }
+        .requirements-comparison-head,
+        .requirements-comparison-row { display: grid !important; grid-template-columns: 34px 170px minmax(150px, 1.1fr) minmax(150px, 1fr) minmax(150px, 1fr) !important; align-items: center; }
+        .requirements-comparison-head { min-width: 680px; padding: 12px 0; color: var(--text); background: var(--surface-2); border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: .78rem; font-weight: 700; }
+        .requirements-comparison-head span { padding: 0 12px; }
+        .requirements-comparison-row { min-width: 720px; }
+        .requirements-comparison-head { min-width: 720px; }
+        .requirements-comparison-row > * { min-width: 0; }
+        .requirements-comparison-row.is-failed,
+        .requirements-comparison-row.is-passed { background: transparent !important; }
+        .requirements-comparison-row:nth-child(odd) { background: var(--surface) !important; }
+        .requirements-comparison-row:nth-child(even) { background: var(--surface-2) !important; }
+        .requirements-comparison-row > span,
+        .requirements-comparison-row > strong { padding: 0 12px; }
+        .requirements-comparison-row > span:not(:first-child),
+        .requirements-comparison-row > strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .comparison-status-icon { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-weight: 900; line-height: 1; }
+        .comparison-status-icon.is-pass { color: var(--success); }
+        .comparison-status-icon.is-fail { color: var(--danger); }
+        .spec-label-cell { display: inline-flex; align-items: center; gap: 8px; }
+        .spec-type-icon { display: inline-flex; width: 17px; height: 17px; color: var(--muted); }
+        .spec-type-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        .comparison-tier { min-width: 0; }
+        .comparison-bar { display: none !important; }
+        @media (max-width: 700px) {
+            .results-actions .btn { flex-basis: 100%; }
+            #report-status { padding: 72px 20px 20px; }
+            #report-status .specter-context-button { top: 16px; left: 20px; right: auto; }
+            .results-combined-header { align-items: flex-start; }
+            .requirements-comparison-head,
+            .requirements-comparison-row { grid-template-columns: 30px 160px minmax(150px, 1.1fr) minmax(145px, 1fr) minmax(145px, 1fr) !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><img src="assets/images/compatix-logo-aurora.png" class="navbar-logo" alt="CompatiX logo"><span>Compati<span class="brand-accent">X</span></span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+            <ul class="navbar-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="check.html">Check Compatibility</a></li>
+                <li><a href="apps-library.html">Apps</a></li>
+                <li><a href="games-library.html">Games</a></li>
+                <li><a href="build-advisor.html">Build Advisor</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a class="nav-ai-cta" href="specter.html"><img src="assets/specter-avatar-small.svg" alt="" aria-hidden="true">Specter</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="page-main">
+        <!-- No Results State -->
+        <div id="no-results-state" style="display: none;">
+            <section class="card card-centered-600">
+                <div style="text-align: center;">
+                    <h2 class="text-muted results-empty-title">No Results Found</h2>
+                    <p class="text-muted results-empty-copy">
+                        Please run a compatibility check first to see your results.
+                    </p>
+                    <a href="check.html" class="btn">Back to Compatibility Checker</a>
+                </div>
+            </section>
+        </div>
+
+        <!-- Results State -->
+        <div id="results-state" style="display: none;">
+            <section id="report-status" class="report-status-card" aria-live="polite"></section>
+                <section id="multi-results-list" class="multi-results-list" aria-live="polite" hidden></section>
+            <div id="ai-estimated-notice" class="ai-estimated-notice" style="display: none;">
+                ⚠️ Exact requirements for this title weren't found in our database. These results are estimated by Specter AI and may not be fully accurate.
+            </div>
+
+            <section class="results-two-column">
+                <aside class="results-left-column">
+                    <!-- Overall Result Banner -->
+                    <div id="result-banner" class="result-banner">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <section class="results-actions">
+                        <a href="check.html" class="btn">← Check Another Game/App</a>
+                        <a id="view-library-btn" href="#" class="btn btn-secondary" style="display: none;">View in Games →</a>
+                        <button id="copy-results-btn" type="button" class="btn btn-secondary">Copy Results</button>
+                    </section>
+                </aside>
+
+                <section class="results-right-column">
+                    <!-- Game/App Title -->
+                    <section class="results-header">
+                        <h1 id="game-title"></h1>
+                        <p id="game-subtitle" class="text-muted"></p>
+                    </section>
+
+                    <!-- Specs Comparison Grid -->
+                    <section class="specs-comparison-section">
+                        <h2>System Check</h2>
+                        <div id="specs-grid" class="specs-grid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                        <div id="unknown-note" class="unknown-note" style="display: none;">
+                            ℹ️ Some data was unavailable for this game/app, so some categories couldn't be checked.
+                        </div>
+                    </section>
+
+                    <section id="requirements-comparison" class="requirements-comparison-section">
+                        <div class="section-heading-row"><div><span class="section-eyebrow">Comparison</span><h2>Spec comparison</h2></div></div>
+                        <div id="requirements-comparison-table" class="requirements-comparison-table" role="table" aria-label="System requirements comparison"></div>
+                    </section>
+
+                </section>
+            </section>
+            <section class="requirements-report-grid">
+                <section class="requirement-report-card minimum-requirements-card">
+                    <div class="requirement-card-heading"><span class="requirement-icon">⌁</span><div><h2>Minimum Requirements</h2><p>The baseline needed to run this title.</p></div></div>
+                    <div id="minimum-requirements" class="requirement-list"></div>
+                </section>
+                <section class="requirement-report-card recommended-requirements-card">
+                    <div class="requirement-card-heading"><span class="requirement-icon">✦</span><div><h2>Recommended Requirements</h2><p>For a more comfortable experience.</p></div></div>
+                    <div id="recommended-requirements" class="requirement-list"></div>
+                </section>
+            </section>
+
+            <section id="why-section" class="why-section" style="display: none;"><div class="report-section-heading"><div><span class="section-eyebrow">Needs attention</span><h2>Why?</h2></div><p>These are the requirements causing the result.</p></div><div id="why-list" class="why-list"></div></section>
+            <section id="upgrade-suggestions" class="upgrade-suggestions-section" hidden>
+                <div class="report-section-heading"><div><span class="section-eyebrow">Next steps</span><h2>Upgrade suggestions</h2></div><p>Only components below the minimum are listed.</p></div>
+                <div id="upgrade-suggestions-list" class="upgrade-suggestions-list"></div>
+            </section>
+            <section class="report-bottom-actions"><a href="check.html" class="btn">Check Another</a><a href="#specs-grid" class="btn btn-secondary">View Details</a></section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-wrap">
+            <div class="footer-columns">
+                <section class="footer-brand">
+                    <a class="footer-logo" href="index.html"><img src="assets/images/compatix-logo-aurora.png" alt="CompatiX logo"></a>
+                    <a class="footer-brand-name" href="index.html"><span>Compati<span class="brand-accent">X</span></span></a>
+                    <p class="footer-tagline">Know before you run.</p>
+                    <p class="footer-mission">Helping you check PC compatibility before you install.</p>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Explore</h3>
+                    <a class="footer-link" href="index.html">Home</a>
+                    <a class="footer-link" href="check.html">Check Compatibility</a>
+                    <a class="footer-link" href="apps-library.html">Apps</a>
+                    <a class="footer-link" href="games-library.html">Games</a>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Support</h3>
+                    <a class="footer-link" href="specter.html">Specter</a>
+                    <a class="footer-link" href="about.html">About</a>
+                    <a class="footer-link" href="contact.html">Contact</a>
+                </section>
+            </div>
+            <section class="footer-specter-callout">
+                <a class="footer-specter-link" href="specter.html">
+                    <img src="assets/specter-avatar-small.svg" alt="Specter avatar">
+                    <span class="footer-callout-text">Still have questions? Ask Specter 👻</span>
+                    <span class="footer-callout-button">Chat Now</span>
+                </a>
+            </section>
+            <section class="footer-bottom">
+                <span class="footer-copy">CompatiX — Built by <span class="text-accent">S A Mowlana</span> · 2026</span>
+                <span class="footer-status">🟢 Specter AI: Online · Game data via RAWG</span>
+            </section>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load results on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadResultsPage();
+        });
+
+        async function loadResultsPage() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const requestedId = params.get('id') || params.get('game') || params.get('title');
+
+                const multiData = sessionStorage.getItem('compatibilityResults');
+                if (multiData) {
+                    const multiple = JSON.parse(multiData);
+                    if (requestedId) {
+                        const requested = multiple.find(result => String(result.title_id || '').toLowerCase() === requestedId.toLowerCase() || String(result.game_name || '').toLowerCase() === requestedId.toLowerCase());
+                        if (requested) {
+                            displayResults(requested);
+                            window.currentCompatibilityResult = requested;
+                            return;
+                        }
+                    } else {
+                        displayMultipleResults(Array.isArray(multiple) ? multiple : []);
+                        return;
+                    }
+                }
+
+                const resultData = sessionStorage.getItem('compatibilityResult');
+                if (resultData) {
+                    const data = JSON.parse(resultData);
+                    if (data && typeof data === 'object') {
+                        if (!requestedId || String(data.title_id || '').toLowerCase() === requestedId.toLowerCase() || String(data.game_name || '').toLowerCase() === requestedId.toLowerCase()) {
+                            displayResults(data);
+                            window.currentCompatibilityResult = data;
+                            return;
+                        }
+                    }
+                }
+
+                if (requestedId) {
+                    let savedSpecs = {};
+                    try { savedSpecs = JSON.parse(localStorage.getItem('compatixSpecs') || '{}'); } catch (_) {}
+                    const cpu = savedSpecs.cpu || 'Intel Core i5';
+                    const gpu = savedSpecs.gpu || 'NVIDIA GeForce GTX 1060';
+                    const ram = Number(savedSpecs.ram) || 8;
+                    const storage = Number(savedSpecs.storage) || 100;
+                    const os = savedSpecs.os || 'Windows 10 (64-bit)';
+
+                    const payload = { cpu, gpu, ram, storage, os, selected_game: requestedId, title_id: requestedId };
+                    const res = await fetch('check.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        sessionStorage.setItem('compatibilityResult', JSON.stringify(data));
+                        displayResults(data);
+                        window.currentCompatibilityResult = data;
+                        return;
+                    }
+                }
+
+                showResultsError();
+            } catch (error) {
+                console.error('Error parsing compatibility results:', error);
+                showResultsError();
+            }
+        }
+
+        function displayResults(data) {
+            try {
+                if (!data || typeof data !== 'object' || !data.game_name) throw new Error('Missing compatibility result data');
+                const required = data.required_specs || {};
+                const recommended = data.recommended_specs || {};
+                const rows = [
+                    ['CPU', data.user_specs?.cpu, required.cpu, recommended.cpu],
+                    ['GPU', data.user_specs?.gpu, required.gpu, recommended.gpu],
+                    ['RAM', data.user_specs?.ram, required.ram, recommended.ram],
+                    ['Storage', data.user_specs?.storage, required.storage, recommended.storage],
+                    ['OS', data.user_specs?.os, required.os, recommended.os]
+                ];
+                const failures = Array.isArray(data.mismatched_fields) ? data.mismatched_fields : [];
+                const matched = Array.isArray(data.matched_fields) ? data.matched_fields : [];
+                const resultState = document.getElementById('results-state');
+                const noResults = document.getElementById('no-results-state');
+                const table = document.getElementById('requirements-comparison-table');
+                if (!resultState || !noResults || !table) throw new Error('Results page markup is incomplete');
+                document.getElementById('game-title').textContent = data.game_name;
+                document.getElementById('game-subtitle').textContent = data.ai_estimated ? 'Requirements estimated by Specter AI.' : 'Requirements from the CompatiX library.';
+                const header = '<div class="requirements-comparison-head" role="row"><span></span><span></span><span>Your PC</span><span>Minimum</span><span>Recommended</span></div>';
+                table.innerHTML = header + rows.map(([name, yours, minimum, rec]) => {
+                    const failed = failures.some(item => String(item.field).toLowerCase() === name.toLowerCase());
+                    const passed = matched.some(item => String(item).toLowerCase() === name.toLowerCase());
+                    const rowClass = failed ? 'is-failed' : passed ? 'is-passed' : 'is-unknown';
+                    const indicator = failed ? '<span class="comparison-status-icon is-fail" aria-label="Below minimum">×</span>' : passed ? '<span class="comparison-status-icon is-pass" aria-label="Meets minimum">✓</span>' : '<span class="comparison-status-icon" aria-label="Review">–</span>';
+                    return `<div class="requirements-comparison-row ${rowClass}" role="row"><span>${indicator}</span><strong class="spec-label-cell">${specIcon(name)}<span>${name}</span></strong><span>${formatSpecValue(name, yours)}</span><span>${formatSpecValue(name, minimum)}</span><span>${formatSpecValue(name, rec ?? minimum)}</span></div>`;
+                }).join('');
+                document.getElementById('minimum-requirements').innerHTML = rows.map(([name, , minimum]) => `<div class="requirement-item"><strong>${name}</strong><span>${formatSpecValue(name, minimum)}</span></div>`).join('');
+                document.getElementById('recommended-requirements').innerHTML = rows.map(([name, , minimum, rec]) => `<div class="requirement-item"><strong>${name}</strong><span>${formatSpecValue(name, rec ?? minimum)}</span></div>`).join('');
+                const notice = document.getElementById('ai-estimated-notice');
+                if (notice) notice.style.display = data.ai_estimated ? 'block' : 'none';
+                renderReportStatus(data);
+                const actions = document.querySelector('.results-actions');
+                const comparisonSection = document.getElementById('requirements-comparison');
+                if (comparisonSection && actions) comparisonSection.after(actions);
+                if (notice && actions) actions.after(notice);
+                displayIssues(data);
+                setupReferenceLink(data);
+                noResults.style.display = 'none';
+                resultState.style.display = 'block';
+            } catch (error) {
+                console.error('Unable to render compatibility result:', error);
+                showResultsError();
+            }
+        }
+
+        function formatSpecValue(field, value) {
+            if (value === null || value === undefined || value === '') return 'Not specified';
+            const numeric = Number(value);
+            if ((field === 'RAM' || field === 'Storage') && Number.isFinite(numeric)) {
+                return `${escapeHtml(String(numeric))} GB`;
+            }
+            return escapeHtml(String(value));
+        }
+
+        function specIcon(field) {
+            const paths = {
+                CPU: '<rect x="5" y="5" width="10" height="10" rx="1"/><path d="M8 1v4M12 1v4M16 8h3M16 12h3M8 15v4M12 15v4M5 8H1M5 12H1"/>',
+                GPU: '<rect x="2" y="4" width="15" height="10" rx="1"/><path d="M5 7h5v4H5zM17 7h2v4h-2M6 17h8"/>',
+                RAM: '<rect x="2" y="6" width="16" height="7" rx="1"/><path d="M5 9h2M9 9h2M13 9h2M5 13v3M9 13v3M13 13v3M17 13v3"/>',
+                Storage: '<rect x="3" y="3" width="14" height="16" rx="2"/><circle cx="10" cy="14" r="2"/><path d="M7 6h6"/>',
+                OS: '<rect x="2" y="3" width="16" height="13" rx="1"/><path d="M2 13h16M8 19h4M10 16v3"/>'
+            };
+            return `<span class="spec-type-icon" aria-hidden="true"><svg viewBox="0 0 20 20">${paths[field] || paths.OS}</svg></span>`;
+        }
+
+        function displayMultipleResults(results) {
+            if (!Array.isArray(results) || !results.length) return showResultsError();
+            const list = document.getElementById('multi-results-list');
+            document.getElementById('no-results-state').style.display = 'none';
+            document.getElementById('results-state').style.display = 'block';
+            list.hidden = false;
+            list.innerHTML = results.map(result => `<article class="multi-result-card"><div><strong>${escapeHtml(result.game_name || 'Selected title')}</strong><p class="multi-result-verdict ${result.compatible ? 'is-compatible' : 'is-not-compatible'}">${result.compatible ? 'Compatible' : 'Needs attention'}</p></div></article>`).join('');
+        }
+
+        function showNoResults() {
+            document.getElementById('results-state').style.display = 'none';
+            document.getElementById('no-results-state').style.display = 'block';
+        }
+
+        function showResultsError() {
+            showNoResults();
+            const title = document.querySelector('.results-empty-title');
+            const copy = document.querySelector('.results-empty-copy');
+            if (title) title.textContent = 'Something went wrong, please try again';
+            if (copy) copy.textContent = 'We could not load the compatibility results. Return to the checker and submit again.';
+        }
+
+        /* Retained legacy fragment disabled; rendering is handled by displayResults above.
+            const isGame = /game/i.test(data.content_type || data.type || '') || !!data.image_url;
+            const experience = document.getElementById('experience-section');
+            if (isGame && experience) {
+                experience.style.display = 'block';
+                document.getElementById('experience-copy').textContent = data.compatible === true ? 'The minimum requirements are met. Start with the game’s default or lower settings, then adjust based on how it feels on your device.' : 'Because one or more minimum requirements are not met, a stable play experience cannot be expected without addressing the items below.';
+            }
+            if (failures.length) {
+                document.getElementById('why-section').style.display = 'block';
+                document.getElementById('why-list').innerHTML = failures.map(item => `<article class="why-item"><h3>${escapeHtml(item.field || 'Requirement')}</h3><p>${escapeHtml(item.reason || 'This requirement was not met.')}</p>${item.suggested_upgrade ? `<p class="why-next-step">Next step: ${escapeHtml(item.suggested_upgrade)}</p>` : ''}</article>`).join('');
+            }
+        }
+
+        */
+
+        function displayIssues(data) {
+            const failures = Array.isArray(data.mismatched_fields) ? data.mismatched_fields : [];
+            const section = document.getElementById('why-section');
+            if (!failures.length) return;
+            section.style.display = 'block';
+            document.getElementById('why-list').innerHTML = failures.map(item => `<article class="why-item"><h3>${escapeHtml(item.field || 'Requirement')}</h3><p>${escapeHtml(item.reason || 'This requirement was not met.')}</p>${item.suggested_upgrade ? `<p class="why-next-step">Next step: ${escapeHtml(item.suggested_upgrade)}</p>` : ''}</article>`).join('');
+        }
+
+        function setupReferenceLink(data) {
+            const btn = document.getElementById('view-library-btn');
+            const gameName = data.game_name || '';
+
+            if (gameName) {
+                btn.style.display = 'inline-block';
+                btn.href = 'games-library.html';
+                btn.onclick = function(e) {
+                    // Direct the user to the visible catalog page for the detected item.
+                };
+            }
+        }
+
+        function renderReportStatus(data) {
+            const card = document.getElementById('report-status');
+            if (!card) return;
+            const state = data.compatible === true ? 'compatible' : data.compatible === false ? 'not-compatible' : 'partial';
+            const label = data.compatible === true ? 'Compatible' : data.compatible === false ? 'Not compatible' : 'Partially compatible';
+            const failures = Array.isArray(data.mismatched_fields) ? data.mismatched_fields : [];
+            const totalRows = 5;
+            const isPass = data.compatible === true;
+            const summaryChip = isPass ? `${totalRows} of ${totalRows} requirements met` : `${failures.length} of ${totalRows} requirements not met`;
+            const firstFailure = failures[0];
+            const summary = data.compatible === true
+                ? (isRecommendedResult(data) ? 'All components meet the recommended requirements.' : 'All components meet the minimum requirements.')
+                : firstFailure ? `Your ${String(firstFailure.field || 'component')} is below the minimum requirement.` : 'One or more components are below the minimum requirement.';
+            const title = String(data.game_name || 'Compatibility result');
+            const initials = escapeHtml(title.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase() || 'CX');
+            const image = data.image_url ? `<img class="results-title-image" src="${escapeHtml(data.image_url)}" alt="${escapeHtml(title)}" onerror="this.outerHTML='<span class=&quot;results-title-fallback&quot;>${initials}</span>'">` : `<span class="results-title-fallback" aria-hidden="true">${initials}</span>`;
+            card.className = `report-status-card report-status-${state} verdict-banner${isPass ? ' is-success' : ''}`;
+            card.innerHTML = `<div class="results-combined-header">${image}<div class="results-combined-copy"><h1 class="results-combined-title">${escapeHtml(title)}</h1><div class="results-combined-status ${isPass ? 'is-pass' : 'is-fail'}"><span class="report-status-icon ${isPass ? 'is-pass' : 'is-fail'}" aria-hidden="true">${isPass ? '✓' : '×'}</span><span>${label}</span></div><span class="report-status-summary ${isPass ? 'is-pass' : 'is-fail'}">${summaryChip}</span><p class="results-combined-reason">${escapeHtml(summary)}</p><span class="results-combined-meta">${escapeHtml(data.ai_estimated ? 'Requirements estimated by Specter AI.' : 'Requirements from the CompatiX library.')}</span></div></div><button type="button" class="specter-context-button" onclick="openSpecterWithContext('Ask Specter why')">Ask Specter why</button>`;
+        }
+
+        function isRecommendedResult(data) {
+            const user = data.user_specs || {};
+            const recommended = data.recommended_specs || data.rec_specs || {};
+            return ['ram', 'storage'].every(key => !recommended[key] || Number(user[key]) >= Number(recommended[key]));
+        }
+
+        function escapeHtml(unsafe) {
+            return String(unsafe)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
+

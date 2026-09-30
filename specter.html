@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat with Specter for PC compatibility guidance, hardware troubleshooting, and upgrade advice.">
+    <meta name="author" content="S A Mowlana">
+    <title>CompatiX</title>
+    <link rel="icon" type="image/png" href="assets/images/compatix-logo-aurora.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="specter-config.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><img src="assets/images/compatix-logo-aurora.png" class="navbar-logo" alt="CompatiX logo"><span>Compati<span class="brand-accent">X</span></span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+            <ul class="navbar-links" id="primary-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="check.html">Check Compatibility</a></li>
+                <li><a href="apps-library.html">Apps</a></li>
+                <li><a href="games-library.html">Games</a></li>
+                <li><a href="build-advisor.html">Build Advisor</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a class="nav-ai-cta" href="specter.html"><img src="assets/specter-avatar-small.svg" alt="" aria-hidden="true">Specter</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="page-main specter-page-main">
+        <!-- Mobile Sidebar Toggle Bar (<900px) -->
+        <div class="specter-mobile-bar">
+            <button type="button" id="specter-sidebar-toggle" class="btn btn-secondary specter-sidebar-toggle" aria-expanded="false" aria-controls="specter-sidebar">
+                <span class="icon" aria-hidden="true">☰</span> Specter Info
+            </button>
+            <div class="specter-mobile-title">
+                <img src="assets/specter-avatar-small.svg" alt="" aria-hidden="true">
+                <span>Specter AI</span>
+            </div>
+        </div>
+
+        <header class="specter-intro">
+            <div>
+                <span class="specter-intro-kicker">COMPATIX AI ASSISTANT</span>
+                <h1>Meet Specter</h1>
+                <p>Your AI assistant for PC compatibility, games, apps and upgrades.</p>
+            </div>
+            <span class="specter-intro-status"><span aria-hidden="true">●</span> Ready to help</span>
+        </header>
+
+        <!-- Specs Modal -->
+        <div id="specs-modal" class="specs-modal" hidden>
+            <form id="specs-form" class="specs-form">
+                <div class="specs-form-header"><h2>Edit My Specs</h2><button type="button" id="close-specs-button" aria-label="Close specs editor">&times;</button></div>
+                <label for="profile-cpu">CPU (Processor)</label>
+                <select id="profile-cpu" name="cpu" required>
+                    <option value="">Select your CPU...</option>
+                    <optgroup label="Intel Core (Current Gen)">
+                        <option value="Intel Core i3">Intel Core i3</option>
+                        <option value="Intel Core i5">Intel Core i5</option>
+                        <option value="Intel Core i7">Intel Core i7</option>
+                        <option value="Intel Core i9">Intel Core i9</option>
+                    </optgroup>
+                    <optgroup label="Intel Core (New Naming)">
+                        <option value="Intel Core 3">Intel Core 3</option>
+                        <option value="Intel Core 5">Intel Core 5</option>
+                        <option value="Intel Core 7">Intel Core 7</option>
+                        <option value="Intel Core 9">Intel Core 9</option>
+                        <option value="Intel Core Ultra 5">Intel Core Ultra 5</option>
+                        <option value="Intel Core Ultra 7">Intel Core Ultra 7</option>
+                        <option value="Intel Core Ultra 9">Intel Core Ultra 9</option>
+                    </optgroup>
+                    <optgroup label="Intel Other">
+                        <option value="Intel Pentium">Intel Pentium</option>
+                        <option value="Intel Celeron">Intel Celeron</option>
+                        <option value="Intel Xeon">Intel Xeon</option>
+                    </optgroup>
+                    <optgroup label="AMD Ryzen">
+                        <option value="AMD Ryzen 3">AMD Ryzen 3</option>
+                        <option value="AMD Ryzen 5">AMD Ryzen 5</option>
+                        <option value="AMD Ryzen 7">AMD Ryzen 7</option>
+                        <option value="AMD Ryzen 9">AMD Ryzen 9</option>
+                        <option value="AMD Ryzen Threadripper">AMD Ryzen Threadripper</option>
+                    </optgroup>
+                    <optgroup label="AMD Other">
+                        <option value="AMD FX">AMD FX</option>
+                        <option value="AMD Athlon">AMD Athlon</option>
+                        <option value="AMD EPYC">AMD EPYC</option>
+                    </optgroup>
+                    <optgroup label="Apple Silicon">
+                        <option value="Apple M1">Apple M1</option>
+                        <option value="Apple M1 Pro">Apple M1 Pro</option>
+                        <option value="Apple M1 Max">Apple M1 Max</option>
+                        <option value="Apple M1 Ultra">Apple M1 Ultra</option>
+                        <option value="Apple M2">Apple M2</option>
+                        <option value="Apple M2 Pro">Apple M2 Pro</option>
+                        <option value="Apple M2 Max">Apple M2 Max</option>
+                        <option value="Apple M2 Ultra">Apple M2 Ultra</option>
+                        <option value="Apple M3">Apple M3</option>
+                        <option value="Apple M3 Pro">Apple M3 Pro</option>
+                        <option value="Apple M3 Max">Apple M3 Max</option>
+                        <option value="Apple M4">Apple M4</option>
+                        <option value="Apple M4 Pro">Apple M4 Pro</option>
+                        <option value="Apple M4 Max">Apple M4 Max</option>
+                    </optgroup>
+                    <option value="other">Other / Not Listed</option>
+                </select>
+
+                <label for="profile-gpu">GPU (Graphics Card)</label>
+                <select id="profile-gpu" name="gpu" required>
+                    <option value="">Select your GPU...</option>
+                    <optgroup label="Nvidia GeForce (Current/Recent)">
+                        <option value="NVIDIA GeForce RTX 5090">NVIDIA GeForce RTX 5090</option>
+                        <option value="NVIDIA GeForce RTX 5080">NVIDIA GeForce RTX 5080</option>
+                        <option value="NVIDIA GeForce RTX 5070 Ti">NVIDIA GeForce RTX 5070 Ti</option>
+                        <option value="NVIDIA GeForce RTX 5070">NVIDIA GeForce RTX 5070</option>
+                        <option value="NVIDIA GeForce RTX 5060 Ti">NVIDIA GeForce RTX 5060 Ti</option>
+                        <option value="NVIDIA GeForce RTX 5060">NVIDIA GeForce RTX 5060</option>
+                        <option value="NVIDIA GeForce RTX 4090">NVIDIA GeForce RTX 4090</option>
+                        <option value="NVIDIA GeForce RTX 4080">NVIDIA GeForce RTX 4080</option>
+                        <option value="NVIDIA GeForce RTX 4070 Ti">NVIDIA GeForce RTX 4070 Ti</option>
+                        <option value="NVIDIA GeForce RTX 4070">NVIDIA GeForce RTX 4070</option>
+                        <option value="NVIDIA GeForce RTX 4060 Ti">NVIDIA GeForce RTX 4060 Ti</option>
+                        <option value="NVIDIA GeForce RTX 4060">NVIDIA GeForce RTX 4060</option>
+                        <option value="NVIDIA GeForce RTX 3090">NVIDIA GeForce RTX 3090</option>
+                        <option value="NVIDIA GeForce RTX 3080">NVIDIA GeForce RTX 3080</option>
+                        <option value="NVIDIA GeForce RTX 3070">NVIDIA GeForce RTX 3070</option>
+                        <option value="NVIDIA GeForce RTX 3060 Ti">NVIDIA GeForce RTX 3060 Ti</option>
+                        <option value="NVIDIA GeForce RTX 3060">NVIDIA GeForce RTX 3060</option>
+                        <option value="NVIDIA GeForce RTX 3050">NVIDIA GeForce RTX 3050</option>
+                    </optgroup>
+                    <optgroup label="Nvidia GeForce (Older)">
+                        <option value="NVIDIA GeForce GTX 1660 Ti">NVIDIA GeForce GTX 1660 Ti</option>
+                        <option value="NVIDIA GeForce GTX 1660">NVIDIA GeForce GTX 1660</option>
+                        <option value="NVIDIA GeForce GTX 1650">NVIDIA GeForce GTX 1650</option>
+                        <option value="NVIDIA GeForce GTX 1080 Ti">NVIDIA GeForce GTX 1080 Ti</option>
+                        <option value="NVIDIA GeForce GTX 1080">NVIDIA GeForce GTX 1080</option>
+                        <option value="NVIDIA GeForce GTX 1070">NVIDIA GeForce GTX 1070</option>
+                        <option value="NVIDIA GeForce GTX 1060">NVIDIA GeForce GTX 1060</option>
+                        <option value="NVIDIA GeForce GTX 1050 Ti">NVIDIA GeForce GTX 1050 Ti</option>
+                        <option value="NVIDIA GeForce GTX 1050">NVIDIA GeForce GTX 1050</option>
+                    </optgroup>
+                    <optgroup label="AMD Radeon (Current/Recent)">
+                        <option value="AMD Radeon RX 9070 XT">AMD Radeon RX 9070 XT</option>
+                        <option value="AMD Radeon RX 9070">AMD Radeon RX 9070</option>
+                        <option value="AMD Radeon RX 7900 XTX">AMD Radeon RX 7900 XTX</option>
+                        <option value="AMD Radeon RX 7900 XT">AMD Radeon RX 7900 XT</option>
+                        <option value="AMD Radeon RX 7800 XT">AMD Radeon RX 7800 XT</option>
+                        <option value="AMD Radeon RX 7700 XT">AMD Radeon RX 7700 XT</option>
+                        <option value="AMD Radeon RX 7600">AMD Radeon RX 7600</option>
+                        <option value="AMD Radeon RX 6900 XT">AMD Radeon RX 6900 XT</option>
+                        <option value="AMD Radeon RX 6800 XT">AMD Radeon RX 6800 XT</option>
+                        <option value="AMD Radeon RX 6700 XT">AMD Radeon RX 6700 XT</option>
+                        <option value="AMD Radeon RX 6600 XT">AMD Radeon RX 6600 XT</option>
+                        <option value="AMD Radeon RX 6600">AMD Radeon RX 6600</option>
+                        <option value="AMD Radeon RX 6500 XT">AMD Radeon RX 6500 XT</option>
+                    </optgroup>
+                    <optgroup label="AMD Radeon (Older)">
+                        <option value="AMD Radeon RX 590">AMD Radeon RX 590</option>
+                        <option value="AMD Radeon RX 580">AMD Radeon RX 580</option>
+                        <option value="AMD Radeon RX 570">AMD Radeon RX 570</option>
+                        <option value="AMD Radeon RX 560">AMD Radeon RX 560</option>
+                    </optgroup>
+                    <optgroup label="Integrated Graphics">
+                        <option value="Intel UHD Graphics">Intel UHD Graphics</option>
+                        <option value="Intel Iris Xe">Intel Iris Xe</option>
+                        <option value="AMD Radeon Graphics (APU)">AMD Radeon Graphics (APU)</option>
+                        <option value="Apple Silicon GPU (integrated)">Apple Silicon GPU (integrated)</option>
+                    </optgroup>
+                    <option value="other">Other / Not Listed</option>
+                </select>
+
+                <label for="profile-ram">RAM (GB)</label>
+                <select id="profile-ram" name="ram" required>
+                    <option value="">Select RAM amount...</option>
+                    <option value="2">2 GB</option>
+                    <option value="4">4 GB</option>
+                    <option value="6">6 GB</option>
+                    <option value="8">8 GB</option>
+                    <option value="12">12 GB</option>
+                    <option value="16">16 GB</option>
+                    <option value="24">24 GB</option>
+                    <option value="32">32 GB</option>
+                    <option value="48">48 GB</option>
+                    <option value="64">64 GB</option>
+                    <option value="96">96 GB</option>
+                    <option value="128">128 GB+</option>
+                </select>
+
+                <label for="profile-storage">Storage (Available Space)</label>
+                <select id="profile-storage" name="storage" required>
+                    <option value="">Select storage amount...</option>
+                    <option value="5">5GB - 10GB</option>
+                    <option value="10">10GB - 20GB</option>
+                    <option value="20">20GB - 50GB</option>
+                    <option value="50">50GB - 100GB</option>
+                    <option value="100">100GB - 250GB</option>
+                    <option value="250">250GB - 500GB</option>
+                    <option value="500">500GB - 1TB</option>
+                    <option value="1000">1TB+</option>
+                </select>
+
+                <label for="profile-os">Operating System</label>
+                <select id="profile-os" name="os" required>
+                    <option value="">Select your OS...</option>
+                    <optgroup label="Windows">
+                        <option value="Windows 7">Windows 7</option>
+                        <option value="Windows 8 / 8.1">Windows 8 / 8.1</option>
+                        <option value="Windows 10 (32-bit)">Windows 10 (32-bit)</option>
+                        <option value="Windows 10 (64-bit)">Windows 10 (64-bit)</option>
+                        <option value="Windows 11 (64-bit)">Windows 11 (64-bit)</option>
+                        <option value="Windows 11 (ARM)">Windows 11 (ARM)</option>
+                    </optgroup>
+                    <optgroup label="macOS">
+                        <option value="macOS Monterey">macOS Monterey</option>
+                        <option value="macOS Ventura">macOS Ventura</option>
+                        <option value="macOS Sonoma">macOS Sonoma</option>
+                        <option value="macOS Sequoia">macOS Sequoia</option>
+                        <option value="macOS (Latest)">macOS (Latest)</option>
+                    </optgroup>
+                    <optgroup label="Linux">
+                        <option value="Ubuntu">Ubuntu</option>
+                        <option value="Fedora">Fedora</option>
+                        <option value="Debian">Debian</option>
+                        <option value="Linux Mint">Linux Mint</option>
+                        <option value="Arch Linux">Arch Linux</option>
+                        <option value="Other Linux Distribution">Other Linux Distribution</option>
+                    </optgroup>
+                    <option value="other">Other / Not Listed</option>
+                </select>
+
+                <button type="submit" class="btn">Save Specs</button>
+            </form>
+        </div>
+
+        <!-- App Layout Grid (Sidebar + Chat) -->
+        <div class="specter-app-layout">
+            <!-- Sidebar -->
+            <aside class="specter-sidebar" id="specter-sidebar">
+                <div class="sidebar-header">
+                    <img class="specter-avatar-medium" src="assets/specter-avatar.svg" alt="Specter avatar">
+                    <div class="sidebar-header-info">
+                        <h2 class="sidebar-name text-accent">Specter</h2>
+                        <p class="specter-status"><span aria-hidden="true">●</span> Online</p>
+                    </div>
+                    <button type="button" class="sidebar-close-btn" id="specter-sidebar-close" aria-label="Close sidebar">&times;</button>
+                </div>
+
+                <!-- My PC Section -->
+                <section class="pc-profile-sidebar-card" aria-labelledby="pc-profile-title">
+                    <div class="pc-profile-header">
+                        <h3 id="pc-profile-title" class="pc-profile-title">MY PC</h3>
+                        <button type="button" id="edit-specs-button" class="btn btn-secondary btn-sm">Edit</button>
+                    </div>
+                    <div id="pc-profile-values" class="pc-profile-values-sidebar">
+                        <span>CPU: Not set</span>
+                        <span>GPU: Not set</span>
+                        <span>RAM: Not set</span>
+                        <span>Storage: Not set</span>
+                        <span>OS: Not set</span>
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="sidebar-quick-actions">
+                    <h3 class="sidebar-section-title">Quick Actions</h3>
+                    <div class="quick-actions-list">
+                        <button type="button" class="quick-action-btn" data-action="check-game">
+                            <span class="action-icon" aria-hidden="true">🎮</span>
+                            <span>Check a Game</span>
+                        </button>
+                        <button type="button" class="quick-action-btn" id="sidebar-upload-specs-btn" data-action="upload-specs">
+                            <span class="action-icon" aria-hidden="true">📤</span>
+                            <span>Upload My Specs</span>
+                        </button>
+                        <button type="button" class="quick-action-btn" data-action="ask-upgrades">
+                            <span class="action-icon" aria-hidden="true">🔧</span>
+                            <span>Ask About Upgrades</span>
+                        </button>
+                        <a href="build-advisor.html" class="quick-action-btn quick-action-link">
+                            <span class="action-icon" aria-hidden="true">🛠️</span>
+                            <span>Get a PC Suggestion</span>
+                        </a>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Main Chat Area -->
+            <div class="specter-panel-wrapper">
+            <div class="chat-container specter-panel">
+                <!-- Messages Area -->
+                <div class="messages" id="messages-container">
+                    <!-- Messages populated by JS -->
+                </div>
+
+                <!-- Starter Cards (Empty State) -->
+                <div class="starter-cards-container" id="starter-cards-container">
+                    <div class="starter-cards-header">
+                        <span class="starter-cards-badge">Quick actions</span>
+                        <h3 class="starter-cards-title">What would you like to explore?</h3>
+                    </div>
+                    <div class="starter-cards-grid">
+                        <button type="button" class="starter-card" data-prompt="Can you check a game against my PC?">
+                            <span class="starter-card-icon" aria-hidden="true">GAME</span>
+                            <span class="starter-card-text">Check a Game</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="Analyze my PC specifications and tell me what stands out.">
+                            <span class="starter-card-icon" aria-hidden="true">PC</span>
+                            <span class="starter-card-text">Analyze My PC</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="What should I upgrade first for better gaming performance?">
+                            <span class="starter-card-icon" aria-hidden="true">UP</span>
+                            <span class="starter-card-text">What Should I Upgrade?</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="Compare two GPUs and explain which is better for my PC.">
+                            <span class="starter-card-icon" aria-hidden="true">GPU</span>
+                            <span class="starter-card-text">Compare GPUs</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="Explain my PC specifications in simple terms.">
+                            <span class="starter-card-icon" aria-hidden="true">INFO</span>
+                            <span class="starter-card-text">Explain My Specs</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="Find games from the CompatiX library that I can run.">
+                            <span class="starter-card-icon" aria-hidden="true">RUN</span>
+                            <span class="starter-card-text">Find Games I Can Run</span>
+                        </button>
+                        <div class="legacy-starter-actions" aria-hidden="true">
+                        <button type="button" class="starter-card" data-prompt="Will my PC run Cyberpunk 2077?">
+                            <span class="starter-card-icon" aria-hidden="true">🎮</span>
+                            <span class="starter-card-text">Will my PC run Cyberpunk 2077?</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="What should I upgrade for better FPS?">
+                            <span class="starter-card-icon" aria-hidden="true">🔧</span>
+                            <span class="starter-card-text">What should I upgrade for better FPS?</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="Suggest a PC for my budget">
+                            <span class="starter-card-icon" aria-hidden="true">🛠️</span>
+                            <span class="starter-card-text">Suggest a PC for my budget</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="Compare two GPUs for me">
+                            <span class="starter-card-icon" aria-hidden="true">⚖️</span>
+                            <span class="starter-card-text">Compare two GPUs for me</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="What does VRAM mean?">
+                            <span class="starter-card-icon" aria-hidden="true">💡</span>
+                            <span class="starter-card-text">What does VRAM mean?</span>
+                        </button>
+                        <button type="button" class="starter-card" data-prompt="Check my laptop against Cyberpunk 2077">
+                            <span class="starter-card-icon" aria-hidden="true">💻</span>
+                            <span class="starter-card-text">Check my laptop against Cyberpunk 2077</span>
+                        </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Form -->
+                <form id="chat-form" class="chat-input-area">
+                    <input 
+                        type="text" 
+                        id="message-input" 
+                        name="message"
+                        placeholder="Ask Specter anything about your PC..."
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="button" id="upload-specs-button" class="upload-specs-button" aria-label="Upload dxdiag text" title="Upload specs file">&#128196;</button>
+                    <input type="file" id="specs-file-input" accept=".txt,text/plain" hidden>
+                    <span class="specter-input-cursor" aria-hidden="true"></span>
+                    <button type="button" id="send-button">Send</button>
+                </form>
+            </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Backdrop for Mobile -->
+        <div class="specter-sidebar-backdrop" id="specter-sidebar-backdrop"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-wrap">
+            <div class="footer-columns">
+                <section class="footer-brand">
+                    <a class="footer-logo" href="index.html"><img src="assets/images/compatix-logo-aurora.png" alt="CompatiX logo"></a>
+                    <a class="footer-brand-name" href="index.html"><span>Compati<span class="brand-accent">X</span></span></a>
+                    <p class="footer-tagline">Know before you run.</p>
+                    <p class="footer-mission">Helping you check PC compatibility before you install.</p>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Explore</h3>
+                    <a class="footer-link" href="index.html">Home</a>
+                    <a class="footer-link" href="check.html">Check Compatibility</a>
+                    <a class="footer-link" href="apps-library.html">Apps</a>
+                    <a class="footer-link" href="games-library.html">Games</a>
+                </section>
+                <section class="footer-links">
+                    <h3 class="footer-column-title">Support</h3>
+                    <a class="footer-link" href="specter.html">Specter</a>
+                    <a class="footer-link" href="about.html">About</a>
+                    <a class="footer-link" href="contact.html">Contact</a>
+                </section>
+            </div>
+            <section class="footer-specter-callout">
+                <a class="footer-specter-link" href="specter.html">
+                    <img src="assets/specter-avatar-small.svg" alt="Specter avatar">
+                    <span class="footer-callout-text">Still have questions? Ask Specter 👻</span>
+                    <span class="footer-callout-button">Chat Now</span>
+                </a>
+            </section>
+            <section class="footer-bottom">
+                <span class="footer-copy">CompatiX — Built by <span class="text-accent">S A Mowlana</span> · 2026</span>
+                <span class="footer-status">🟢 Specter AI: Online · Game data via RAWG</span>
+            </section>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

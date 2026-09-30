@@ -1,0 +1,6 @@
+{
+  "cpu": { "minimum": "minimum CPU tier", "recommended": "recommended CPU tier" },
+  "gpu": { "minimum": "minimum GPU tier", "recommended": "recommended GPU tier" },
+  "ram": { "minimum": "minimum RAM tier", "recommended": "recommended RAM tier" },
+  "storage": { "minimum": "minimum storage tier", "recommended": "recommended storage tier" }
+}
